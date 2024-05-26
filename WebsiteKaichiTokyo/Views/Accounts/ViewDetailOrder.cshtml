@@ -1,0 +1,62 @@
+﻿@model List<OrderDetail>
+@{
+    ViewData["Title"] = "Xem chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currency = "₫";
+    var percent = "%";
+}
+@section Styles{
+    <style>
+        .desc__order {
+            font-size: 18px;
+            color: #1c1c1c;
+            font-weight: 700;
+            width: 100px;
+        }
+    </style>
+}
+<div class="container">
+    <div class="row mt-2 mb-5 pt-3 white__bk">
+        <div class="col-12">
+            <h3>Chi tiết hóa đơn</h3>
+            <div class="shoping__cart__table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="shoping__product">Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Giảm giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="~/images/products/@item.Product.Thumb" alt="@item.Product.Title">
+                                    <h5>@item.Product.ProductName</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    @item.Product.Price.Value.ToString("#,##0")@currency
+                                </td>
+                                <td class="desc__order">
+                                    @item.Product.Discount@percent
+                                </td>
+                                <td class="desc__order">
+                                    @item.Quantity
+                                </td>
+                                <td class="shoping__cart__total">
+                                    @item.Total.Value.ToString("#,##0")@currency
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-12">
+        </div>
+    </div>
+</div>

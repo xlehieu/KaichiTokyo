@@ -1,0 +1,462 @@
+﻿@model WebsiteKaichiTokyo.Areas.Admin.Models.ViewModel.AdminHomeView
+@{
+    ViewData["Title"] = "Admin Kaichi Tokyo";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    string currency = "₫";
+}
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+            @* <div class="card-stats">
+            <div class="card-stats-title">
+            Số liệu thống kê hóa đơn
+            <select class="form-control mt-1 selectMonth" asp-items="@monthOfYear" title="chọn tháng">
+            <option value="" class="dropdown-item" selected disabled>Chọn tháng</option>
+            </select>
+            <div class="dropdown d-inline">
+            <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#">August</a>
+            <ul class="dropdown-menu dropdown-menu-sm">
+            <li class="dropdown-title">Chọn tháng</li>
+            <li><a href="#" class="select-month dropdown-item">January</a></li>
+            <li><a href="#" class="select-month dropdown-item">February</a></li>
+            <li><a href="#" class="select-month dropdown-item">March</a></li>
+            <li><a href="#" class="select-month dropdown-item">April</a></li>
+            <li><a href="#" class="select-month dropdown-item">May</a></li>
+            <li><a href="#" class="select-month dropdown-item">June</a></li>
+            <li><a href="#" class="select-month dropdown-item">July</a></li>
+            <li><a href="#" class="select-month dropdown-item active">August</a></li>
+            <li><a href="#" class="select-month dropdown-item">September</a></li>
+            <li><a href="#" class="select-month dropdown-item">October</a></li>
+            <li><a href="#" class="select-month dropdown-item">November</a></li>
+            <li><a href="#" class="select-month dropdown-item">December</a></li>
+            </ul>
+            </div>
+            </div>
+            <div class="card-stats-items">
+            <div class="card-stats-item">
+            <div class="card-stats-item-count">24</div>
+            <div class="card-stats-item-label">Pending</div>
+            </div>
+            <div class="card-stats-item">
+            <div class="card-stats-item-count">12</div>
+            <div class="card-stats-item-label">Shipping</div>
+            </div>
+            <div class="card-stats-item">
+            <div class="card-stats-item-count">23</div>
+            <div class="card-stats-item-label">Completed</div>
+            </div>
+            </div>
+            </div> *@
+            <div class="card-icon shadow-primary bg-primary">
+                <i class="fas fa-archive"></i>
+            </div>
+            <div class="card-wrap">
+                <div class="card-header">
+                    <h4>Tổng số hóa đơn tháng @Model.ThisMonth</h4>
+                </div>
+                <div class="card-body">
+                    @Model.TotalOrder
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+            <div class="card-chart">
+                <canvas id="balance-chart" height="80"></canvas>
+            </div>
+            <div class="card-icon shadow-primary bg-primary">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="card-wrap">
+                <div class="card-header">
+                    <h4>Doanh thu tháng @Model.ThisMonth</h4>
+                </div>
+                <div class="card-body">
+                    @(Model.SaleThisMonth.HasValue ? Model.SaleThisMonth.Value.ToString("#,##0") : "0")@currency
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+            <div class="card-chart">
+                <canvas id="sales-chart" height="80"></canvas>
+            </div>
+            <div class="card-icon shadow-primary bg-primary">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div class="card-wrap">
+                <div class="card-header">
+                    <h4>Tổng số sản phẩm bán được</h4>
+                </div>
+                <div class="card-body">
+                    @(Model.TotalProduct.HasValue ? Model.TotalProduct.Value.ToString("N0") : "0")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Doanh thu & Lợi nhuận</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="myChart" height="158"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card gradient-bottom">
+            <div class="card-header">
+                <h4>Sản phẩm doanh số cao</h4>
+                @* <div class="card-header-action dropdown">
+                <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Month</a>
+                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                <li class="dropdown-title">Select Period</li>
+                <li><a href="#" class="dropdown-item">Today</a></li>
+                <li><a href="#" class="dropdown-item">Week</a></li>
+                <li><a href="#" class="dropdown-item active">Month</a></li>
+                <li><a href="#" class="dropdown-item">This Year</a></li>
+                </ul>
+                </div> *@
+            </div>
+            <div class="card-body" id="top-5-scroll">
+                <ul class="list-unstyled list-unstyled-border">
+                    @if (Model.TopOfProducts != null && Model.TopOfProducts.Count > 0)
+                    {
+                        @foreach (var item in Model.TopOfProducts)
+                        {
+                            <li class="media">
+                                <img class="mr-3 rounded" width="55" src="~/images/products/@item.Product.Thumb" alt="@item.Product.Title">
+                                <div class="media-body">
+                                    <div class="float-right"><div class="font-weight-600 text-muted text-small">@item.Amount</div></div>
+                                    <div class="media-title">@item.Product.ProductName</div>
+                                    <div class="mt-1">
+                                        <div class="budget-price">
+                                            <div class="budget-price-label">@item.Total.Value.ToString("N0")@currency</div>
+                                        </div>
+                                        @* <div class="budget-price">
+                                <div class="budget-price-square bg-danger" data-width="43%"></div>
+                                <div class="budget-price-label">$38,700</div>
+                                </div> *@
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    }
+
+                </ul>
+            </div>
+            @* <div class="card-footer pt-3 d-flex justify-content-center">
+            <div class="budget-price justify-content-center">
+            <div class="budget-price-square bg-primary" data-width="20"></div>
+            <div class="budget-price-label">Tổng doanh thu củasản phẩm</div>
+            </div>
+            <div class="budget-price justify-content-center">
+            <div class="budget-price-square bg-danger" data-width="20"></div>
+            <div class="budget-price-label">Budget Price</div>
+            </div>
+            </div> *@
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Hóa đơn</h4>
+                <div class="card-header-action">
+                    <a asp-action="Index" asp-controller="AdminOrders" class="btn btn-danger">Xem tất cả <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+            @if (Model.OrderList != null && Model.OrderList.Count > 0)
+            {
+                <div class="card-body p-0">
+                    <div class="table-responsive table-invoice">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Mã hóa đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày mua</th>
+                                <th><i class="fa fa-th"></i></th>
+                            </tr>
+                            @foreach (var item in Model.OrderList)
+                            {
+                                <tr>
+                                    <td><a asp-controller="AdminOrders" asp-action="Details" asp-route-id="@item.OrderId">INV-@item.OrderId</a></td>
+                                    <td class="font-weight-600">@item.CustomerName</td>
+                                    @if (item.TransactStatus != null)
+                                    {
+                                        @switch (item.TransactStatusId)
+                                        {
+                                            case 1:
+                                                <td class="text-success">@item.TransactStatus.Status</td>
+                                                break;
+                                            case 2:
+                                                <td class="text-success">@item.TransactStatus.Status</td>
+                                                break;
+                                            default:
+                                                <td class="text-warning">@item.TransactStatus.Status</td>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="text-secondary">Chưa có trạng thái đơn hàng</td>
+                                    }
+                                    <td>@item.OrderDate.Value.ToLongDateString()</td>
+                                    <td>
+                                        <a asp-controller="AdminOrders" asp-action="Details" asp-route-id="@item.OrderId">Chi tiết</a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-4">
+        @if (Model.ContactList != null && Model.ContactList.Count > 0)
+        {
+            <div class="card card-hero">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="far fa-question-circle"></i>
+                    </div>
+                    <div class="card-description">Tin nhắn từ khách hàng</div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="tickets-list">
+                        @foreach (var contact in Model.ContactList)
+                        {
+                            <a asp-controller="AdminContacts" asp-action="Details" asp-route-id="@contact.ContactId" class="ticket-item">
+                                <div class="ticket-title">
+                                    <h4>@contact.Title</h4>
+                                </div>
+                                <div class="ticket-info">
+                                    <div>@contact.FullName</div>
+                                    <div class="bullet"></div>
+                                    <div class="text-primary">@contact.CreateDate.Value.ToShortDateString()</div>
+                                </div>
+                            </a>
+                        }
+                        <a asp-controller="AdminContacts" asp-action="Index" class="ticket-item ticket-more">
+                            Xem tất cả <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    <script>
+        //Doanh thu theo tuần
+        var balance_chart = document.getElementById("balance-chart").getContext('2d');
+        //Số lượng sản phẩm theo tuần
+        var sales_chart = document.getElementById("sales-chart").getContext('2d');
+        //rgba(63, 82, 227, .2)
+        var balance_chart_bg_color = balance_chart.createLinearGradient(0, 0, 0, 80);
+        balance_chart_bg_color.addColorStop(0, 'rgba(63, 82, 227, .2)');
+        balance_chart_bg_color.addColorStop(1, 'rgba(63, 82, 227, 0)');
+
+        //Biểu đồ số lượng và doanh thu
+        var ctx = document.getElementById("myChart").getContext('2d');
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Admin/Search/TotalThisMonthChart",
+                datatype: "json",
+                type: "get",
+                async: true,
+                success: function (results) {
+                    console.log(results)
+                    if (results.status) {
+                        new Chart(balance_chart, {
+                            type: 'line',
+                            data: {
+                                labels: results.dayArr,
+                                datasets: [{
+                                    label: 'Doanh thu',
+                                    data: results.figureSalesArr,
+                                    backgroundColor: balance_chart_bg_color,
+                                    borderWidth: 3,
+                                    borderColor: 'rgba(63, 82, 227)',
+                                    pointBorderWidth: 3,
+                                    pointBorderColor: '#338218',
+                                    pointRadius: 4,
+                                    pointBackgroundColor: '#338218',
+                                    pointHoverBackgroundColor: '#338218',
+                                }]
+                            },
+                            options: {
+                                layout: {
+                                    padding: {
+                                        bottom: -1,
+                                        left: -1
+                                    }
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        gridLines: {
+                                            display: false,
+                                            drawBorder: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            display: false,
+                                        },
+                                    }],
+                                    xAxes: [{
+                                        gridLines: {
+                                            drawBorder: false,
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            display: false
+                                        }
+                                    }]
+                                },
+                            }
+                        });
+                        new Chart(sales_chart, {
+                            type: 'line',
+                            data: {
+                                labels: results.dayArr,
+                                datasets: [{
+                                    label: 'Số sản phẩm',
+                                    data: results.figureTotalProductArr,
+                                    backgroundColor: balance_chart_bg_color,
+                                    borderWidth: 3,
+                                    borderColor: 'rgba(63, 82, 227)',
+                                    pointBorderWidth: 3,
+                                    pointBorderColor: '#338218',
+                                    pointRadius: 4,
+                                    pointBackgroundColor: '#338218',
+                                    pointHoverBackgroundColor: '#338218',
+                                }]
+                            },
+                            options: {
+                                layout: {
+                                    padding: {
+                                        bottom: -1,
+                                        left: -1
+                                    }
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        gridLines: {
+                                            display: false,
+                                            drawBorder: false,
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            display: false
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        gridLines: {
+                                            drawBorder: false,
+                                            display: false,
+                                        },
+                                        ticks: {
+                                            display: false
+                                        }
+                                    }]
+                                },
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    alert("Lỗi rồi");
+                    console.log(err);
+                }
+            });
+
+            $.ajax({
+                url: "/Admin/Search/DoanhThuLoiNhuan",
+                type: 'get',
+                datatype: 'json',
+                async: true,
+                success: function (results) {
+                    console.log(results);
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: results.dtArr,
+                            datasets: [{
+                                label: 'Doanh thu',
+                                data: results.doanhthuTheoThang,
+                                borderWidth: 2,
+                                backgroundColor: 'rgba(63,82,227,.8)',
+                                borderWidth: 0,
+                                borderColor: 'transparent',
+                                pointBorderWidth: 0,
+                                pointRadius: 3.5,
+                                pointBackgroundColor: 'transparent',
+                                pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
+                            },
+                            {
+                                label: "Lợi nhuận",
+                                data: results.doanhthuTheoThang,
+                                borderWidth: 2,
+                                backgroundColor: 'rgba(254,86,83,.7)',
+                                borderWidth: 0,
+                                borderColor: 'transparent',
+                                pointBorderWidth: 0,
+                                pointRadius: 3.5,
+                                pointBackgroundColor: 'transparent',
+                                pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                yAxes: [{
+                                    gridLines: {
+                                        // display: false,
+                                        drawBorder: false,
+                                        color: '#f2f2f2',
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 15000000,
+                                        callback: function (value, index, values) {
+                                            return value + "đ";
+                                        }
+                                    }
+                                }],
+                                xAxes: [{
+                                    gridLines: {
+                                        display: false,
+                                        tickMarkLength: 15,
+                                    }
+                                }]
+                            },
+                        }
+                    });
+                },
+                error: function (err) {
+                    alert("Lỗi rồi");
+                    console.log(err);
+                },
+            });
+        })
+
+
+    </script>
+}

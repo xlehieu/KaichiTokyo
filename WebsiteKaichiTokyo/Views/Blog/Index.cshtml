@@ -1,0 +1,68 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<WebsiteKaichiTokyo.Models.TinTuc>
+@{
+    int currentPage = ViewBag.CurrentPage;
+    int nextPage = currentPage + 1;
+    int previousPage = currentPage - 1;
+    ViewData["Title"] = "Blog - " + currentPage;
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbBlog.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb__text white__color__link">
+                    <h2>Blogs</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <span>Blogs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+
+<!-- Blog Section Begin -->
+<section class="blog spad">
+    <div class="container">
+        <div class="row pt-3 pb-3 white__bk">
+            <div class="col-12">
+                <div class="row pt-3 white__bk">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            string url = $"News/{item.Alias}-{item.PostId}";
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="blog__item">
+                                    <div class="blog__item__pic">
+                                        <img src="~/images/news/@item.Thumb" alt="@item.Title">
+                                    </div>
+                                    <div class="blog__item__text">
+                                        <ul>
+                                            <li><i class="fa fa-calendar-o"></i> @item.CreateDate.Value.ToShortDateString()</li>
+                                        </ul>
+                                        <h5><a href="@url">@item.Title</a></h5>
+                                        <p>
+                                            @item.Scontents
+                                        </p>
+                                        <a href="@url" class="blog__btn">Xem thêm <span class="arrow_right"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    <div class="col-12">
+                        <div class="product__pagination blog__pagination">
+                            <pager class="pager-container" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" list="@Model" asp-area="" asp-controller="Blog" asp-action="Index" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->

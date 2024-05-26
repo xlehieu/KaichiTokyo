@@ -1,0 +1,64 @@
+﻿@model WebsiteKaichiTokyo.Models.Slider
+
+@{
+    ViewData["Title"] = "Thêm mới slider";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Thêm mới slider</h1>
+</div>
+<div class="section-body">
+    <form class="form-sample" enctype="multipart/form-data" asp-area="Admin" asp-controller="AdminSliders" asp-action="Create" method="post">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card card-success">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="SliderName" class="control-label">Tên slider</label>
+                            <input asp-for="SliderName" class="form-control" placeholder="Nhập tên slider" />
+                            <span asp-validation-for="SliderName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Alias" class="control-label">Đường dẫn</label>
+                            <input asp-for="Alias" class="form-control" placeholder="Nhập đường dẫn" />
+                            <span asp-validation-for="Alias" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square space-icon"></i>Lưu</button>
+                        <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card card-success">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="custom-switch mt-2">
+                                    <input asp-for="Active" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Hoạt động</span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="custom-switch mt-2">
+                                    <input asp-for="HomeFlag" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Hiển thị trang chủ</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Thumb" class="control-label">Hình ảnh</label>
+                            <input asp-for="Thumb" name="fThumb" class="form-control-file" type="file" />
+                            <span asp-validation-for="Thumb" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

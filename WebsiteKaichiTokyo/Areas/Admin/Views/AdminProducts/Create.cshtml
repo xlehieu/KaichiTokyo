@@ -1,0 +1,159 @@
+﻿@model WebsiteKaichiTokyo.Models.Product
+@{
+    ViewData["Title"] = "Thêm sản phẩm mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="~/assets/summernote/summernote-bs4.min.css" rel="stylesheet" />
+    <link href="~/assets/summernote/summernote.min.css" rel="stylesheet" />
+}
+<div class="section-header">
+    <h1>Thêm sản phẩm mới</h1>
+</div>
+<div class="section-body">
+    <form class="form-sample" enctype="multipart/form-data" asp-area="Admin" asp-controller="AdminProducts" asp-action="Create" method="post">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card card-success">
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label">Tiêu đề</label>
+                            <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề sản phẩm" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ShortDesc" class="control-label">Mô tả ngắn</label>
+                            <input asp-for="ShortDesc" class="form-control" placeholder="Nhập mô tả ngắn sản phẩm" />
+                            <span asp-validation-for="ShortDesc" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label">Mô tả sản phẩm</label>
+                            <textarea id="summernote" asp-for="Description" placeholder="Nhập mô tả sản phẩm" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label class="custom-switch mt-2">
+                                    <input asp-for="BestSeller" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Sản phẩm bán chạy</span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="custom-switch mt-2">
+                                    <input asp-for="HomeFlag" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Hiển thị trang chủ</span>
+                                </label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="custom-switch mt-2">
+                                    <input asp-for="Active" class="custom-switch-input">
+                                    <span class="custom-switch-indicator"></span>
+                                    <span class="custom-switch-description">Hoạt động</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square space-icon"></i>Lưu</button>
+                        <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-success">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="ProductName" class="control-label">Tên sản phẩm</label>
+                            <input asp-for="ProductName" placeholder="Nhập tên sản phẩm" class="form-control" />
+                            <span asp-validation-for="ProductName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CatId" class="control-label">Danh mục sản phẩm</label>
+                            <select asp-for="CatId" class="form-control" asp-items="ViewBag.CatId">
+                                <option disabled selected>Chọn danh mục sản phẩm</option>
+                                <option value="0">Không có danh mục</option>
+                            </select>
+                            <span asp-validation-for="CatId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Thumb" class="control-label">Hình ảnh</label>
+                            <input asp-for="Thumb" name="fThumb" class="form-control-file" type="file" />
+                            <span asp-validation-for="Thumb" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GiaNhap" class="control-label">Giá nhập vào</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        ₫
+                                    </div>
+                                </div>
+                                <input asp-for="GiaNhap" placeholder="Nhập giá nhập vào của sản phẩm" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Price" class="control-label">Giá bán</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        ₫
+                                    </div>
+                                </div>
+                                <input asp-for="Price" placeholder="Nhập giá bán sản phẩm" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Discount">Giảm giá</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        %
+                                    </div>
+                                </div>
+                                <input asp-for="Discount" placeholder="Nhập % giảm giá sản phẩm" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Tags" class="control-label"></label>
+                            <input asp-for="Tags" placeholder="Nhập tag" class="form-control" />
+                            <span asp-validation-for="Tags" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MetaDesc" class="control-label"></label>
+                            <input asp-for="MetaDesc" placeholder="Nhập mô tả SEO" class="form-control" />
+                            <span asp-validation-for="MetaDesc" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MetaKey" class="control-label"></label>
+                            <input asp-for="MetaKey" placeholder="Nhập từ khóa SEO" class="form-control" />
+                            <span asp-validation-for="MetaKey" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UnitInstock" class="control-label">Số lượng tồn kho</label>
+                            <input asp-for="UnitInstock" placeholder="Nhập số lượng sản phẩm" class="form-control" type="number" placeholder="Nhập số lượng tồn kho" />
+                            <span asp-validation-for="UnitInstock" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script src="~/assets/summernote/summernote-bs4.min.js"></script>
+    <script src="~/assets/summernote/summernote.min.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $('#summernote').summernote({
+                fontNames: ['Segoe UI', 'arial', 'Arial Black', 'Comic Sans MS', 'Courier New'],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
+                height: 400,
+                minHeight: null,
+                maxHeight: null,
+            });
+        });
+    </script>
+}

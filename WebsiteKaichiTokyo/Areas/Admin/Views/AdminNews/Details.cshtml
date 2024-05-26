@@ -1,0 +1,41 @@
+﻿@model WebsiteKaichiTokyo.Models.TinTuc
+
+@{
+    ViewData["Title"] = "Chi tiết tin " + Model.Title;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Chi tiết tin @Model.Title</h1>
+</div>
+<div class="section-body">
+    <div class="card card-warning">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered text-dark table-md">
+                    <tbody>
+                        <tr>
+                            <td style="min-width:140px">Tiêu đề:</td>
+                            <td>@Model.Title</td>
+                        </tr>
+                        <tr>
+                            <td>Nội dung ngắn:</td>
+                            <td>@Model.Scontents</td>
+                        </tr>
+                        <tr>
+                            <td>Nội dung:</td>
+                            <td>@Html.Raw(Model.Contents)</td>
+                        </tr>
+                        <tr>
+                            <td>Hình ảnh:</td>
+                            <td><img height="200" src="~/images/news/@Model.Thumb" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.PostId"><i class="fa fa-pencil space-icon"></i>Sửa</a>
+    <a asp-action="Index" class="btn btn-dark"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+</div>

@@ -1,0 +1,53 @@
+﻿@model WebsiteKaichiTokyo.ViewModels.RegisterModelView
+
+@{
+    ViewData["Title"] = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/css/style-register-login.css" rel="stylesheet" />
+}
+<section class="p-2" style="background-color: #eee;">
+    <div class="wrapper">
+        <form class="form-right" asp-action="Register">
+            <h2 class="text-uppercase">Đăng ký tài khoản</h2>
+            <div class="mb-3">
+                <label asp-for="FullName">Họ và tên</label>
+                <input type="text" asp-for="FullName" class="input-field">
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EmailAddress">Email</label>
+                <input type="email" class="input-field" asp-for="EmailAddress">
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PhoneNumber">Số điện thoại</label>
+                <input type="text" class="input-field" asp-for="PhoneNumber">
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Password">Mật khẩu</label>
+                <input type="password" asp-for="Password" class="input-field">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword">Nhập lại mật khẩu</label>
+                <input type="password" asp-for="ConfirmPassword" class="input-field">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            @* <div class="mb-3">
+                <label class="option">
+                    I agree to the <a href="#">Terms and Conditions</a>
+                    <input type="checkbox" checked>
+                    <span class="checkmark"></span>
+                </label>
+            </div> *@
+            <a class="nav-link p-0 mb-2" href="/Dang-nhap">Bạn đã có tài khoản?</a>
+            <a class="nav-link p-0 mb-2" asp-controller="Accounts" asp-action="LoginGoogle"><i class="fa fa-google mr-2"></i>Đăng nhập bằng Google</a>
+            <div class="form-field">
+                <button type="submit" class="register">Đăng ký</button>
+            </div>
+        </form>
+    </div>
+</section>

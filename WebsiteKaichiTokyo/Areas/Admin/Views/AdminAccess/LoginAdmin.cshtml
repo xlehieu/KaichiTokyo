@@ -1,0 +1,67 @@
+﻿@model WebsiteKaichiTokyo.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Đăng nhập trang admin";
+    Layout = null;
+}
+<head>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="~/assets/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assets/modules/fontawesome/css/all.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/components.css">
+    <link href="~/assets/css/custom.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/svg" href="~/img/logoheader.png" />
+    <link href="~/css/style-register-login.css" rel="stylesheet" />
+    <!-- Start GA -->
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-Y5DFN9DCWC&amp;l=dataLayer&amp;cx=c"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-94034622-3');
+    </script>
+    <!-- /END GA -->
+    <title>@ViewData["Title"]</title>
+</head>
+<body style="font-family: 'Segoe UI',Verdana, Geneva, Tahoma, sans-serif,sans-serif;">
+    <section class="p-2" style="background-color: #eee;min-height:100vh;">
+        <div class="wrapper">
+            <form class="form-right" asp-action="LoginAdmin">
+                <h2 class="text-uppercase">Đăng nhập</h2>
+                <div class="mb-3">
+                    <label asp-for="UserName">Email</label>
+                    <input type="text" asp-for="UserName" class="input-field">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class=" mb-3">
+                    <label asp-for="Password">Mật khẩu</label>
+                    <input type="password" asp-for="Password" class="input-field">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                @* <div class="mb-3">
+                <label class="option">
+                I agree to the <a href="#">Terms and Conditions</a>
+                <input type="checkbox" checked>
+                <span class="checkmark"></span>
+                </label>
+                </div> *@
+                <a class="nav-link p-0 mb-2" href="/Dang-ky-admin-Kaichi-Tokyo">Bạn chưa có tài khoản?</a>
+                <div class="form-field">
+                    <button type="submit" class="register">Đăng nhập</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    @await Component.InvokeAsync("Notyf")
+</body>
+@section Scripts{
+    <!-- Page Specific JS File -->
+    <script src="~/assets/js/page/index-0.js"></script>
+    <script src="~/assets/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="~/assets/js/scripts.js"></script>
+    <script src="~/assets/js/custom.js"></script>
+}

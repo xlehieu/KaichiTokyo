@@ -1,0 +1,320 @@
+﻿@model WebsiteKaichiTokyo.Models.Product
+
+@{
+    string currentcy = "₫";
+    ViewData["Title"] = Model.ProductName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Product> relateProducts = ViewBag.RelateProducts;
+    int? price = Model.Price;
+    if (Model.Price != null && Model.Discount > 0)
+    {
+        price = Model.Price - (Model.Price * Model.Discount) / 100;
+    }
+    string percent = "%";
+    float? tongDiem = 0;
+    if (ViewBag.AmountFeedbacks > 0)
+    {
+        tongDiem = (float?)Model.Feedbacks.Sum(x => x.NumberStar) / (float?)ViewBag.AmountFeedbacks;
+    }
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbProduct.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center white__color__link">
+                <div class="breadcrumb__text">
+                    <h2>@Model.ProductName</h2>
+                    <div class="breadcrumb__option mt-2">
+                        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <a asp-controller="Product" asp-action="Index">Cửa hàng</a>
+                        <span>@Model.ProductName</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row white__bk pt-3 pb-3">
+            <div class="col-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large" src="~/images/products/@Model.Thumb" alt="@Model.Title">
+                        <div class="product__discount__percent">@Model.Discount@percent</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>@Model.ProductName</h3>
+                    <div class="product__details__price">@price.Value.ToString("N0")@currentcy<span>@Model.Price.Value.ToString("N0")@currentcy</span></div>
+                    <p>
+                        @Model.ShortDesc
+                    </p>
+                    <div class="product__details__category">
+                        @if (Model.Cat != null)
+                        {
+                            <p style="display:inline-block">Danh mục: </p>
+                            <a style="display:inline-block" href="/Danh-muc/@Model.Cat.Alias?catId=@Model.CatId">@Model.Cat.CatName</a>
+                        }
+                    </div>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <span class="dec qtybtn">-</span>
+                                <input id="txtsoluong" name="txtsoluong" type="text" value="1">
+                                <span class="inc qtybtn">+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn primary-btn" id="thanh__toan__san__pham">Mua sản phẩm <input type="hidden" asp-for="ProductId" /></div>
+                    <div class="cart-icon add-to-cart"><i class="fa fa-cart-plus"></i><input type="hidden" asp-for="ProductId" /></div>
+                    <div class="heart-icon add__to__favourite" data-productid="@Model.ProductId"><i class="fa fa-heart-o"></i></div>
+                    <ul>
+                        <li>
+                            <b>Trạng thái</b>
+                            @if (Model.UnitInstock > 0)
+                            {
+                                <span class="text-primary">Còn hàng</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Hết hàng</span>
+                            }
+                        </li>
+                        <li>
+                            <b>Chia sẻ</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                               aria-selected="true">Mô tả sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                               aria-selected="false">Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
+                               aria-selected="false">Đánh giá sản phẩm</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-2">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h5 class="font-weight-bold text-info">Mô tả sản phẩm:</h5>
+                                @Html.Raw(Model.Description)
+                            </div>
+                        </div>
+                        @* <div class="tab-pane" id="tabs-2" role="tabpanel">
+                        <div class="product__details__tab__desc">
+                        <h6>Products Infomation</h6>
+                        <p>
+                        Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                        Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus.
+                        Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam
+                        sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo
+                        eget malesuada. Vivamus suscipit tortor eget felis porttitor volutpat.
+                        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent
+                        sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ac
+                        diam sit amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                        ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                        Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                        Proin eget tortor risus.
+                        </p>
+                        <p>
+                        Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                        ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                        elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                        porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                        nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
+                        </p>
+                        </div>
+                        </div> *@
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="font-weight-bold text-primary">
+                                            Nhận xét (@ViewBag.AmountFeedbacks)
+                                        </h4>
+                                        <div class="row">
+                                            <div class="col-4 mt-3">
+                                                <p>Tổng điểm đánh giá: @(tongDiem != 0 ? tongDiem : 0)</p>
+                                                <div class="star__product">
+                                                    @if (tongDiem.HasValue)
+                                                    {
+                                                        @switch ((int)tongDiem)
+                                                        {
+                                                            case 1:
+                                                                <i class="fa fa-star"></i>
+                                                                break;
+                                                            default:
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                break;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <h5 class="font-weight-bold text-info">Đánh giá của khách hàng:</h5>
+                                                <label class="col-form-label">Viết đánh giá của bạn</label>
+                                                <div class="row">
+                                                    <div class="col-10 col-md-9 col-sm-8">
+                                                        <input class="form-control" type="text" id="content__feedback" />
+                                                    </div>
+                                                    <div class="col-2 col-md-3 col-sm-4">
+                                                        <button id="btn__feedback" class="btn btn-info">Bình luận</button>
+                                                    </div>
+                                                </div>
+                                                <div id="feedback_list">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+@if (relateProducts != null && relateProducts.Count > 0)
+{
+    <!-- Related Product Section Begin -->
+    <section class="related-product">
+        <div class="container">
+            <div class="row white__bk pt-3">
+                <div class="col-12">
+                    <div class="section-title related__product__title">
+                        <h2>Sản phẩm liên quan</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row white__bk pb-3">
+                @foreach (var item in relateProducts)
+                {
+                    string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                    <div class="col-3 col-md-4 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a class="text-primary" href="@url">@item.ProductName</a></h6>
+                                <h5>@item.Price.Value.ToString("N0")@currentcy</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- Related Product Section End -->
+}
+@await Component.InvokeAsync("Notyf")
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var productid = @Model.ProductId;
+            $.ajax({
+                url: '/Product/FeedbackPartial',
+                type: 'get',
+                datatype: 'json',
+                data: {
+                    id: productid,
+                },
+                async: true,
+                success: function (results) {
+                    $("#feedback_list").html("");
+                    $("#feedback_list").html(results);
+                },
+                error: function (err) {
+                    alert('Lỗi')
+                    console.log(err);
+                },
+            });
+            $("#btn__feedback").click(function () {
+                var messages = $("#content__feedback").val();
+                $.ajax({
+                    url: '/Product/Feedback',
+                    type: 'post',
+                    datatype: 'json',
+                    data: {
+                        messages: messages,
+                        id: productid
+                    },
+                    async: true,
+                    success: function (results) {
+                        if (results.success == false) {
+                            alert(results.messages);
+                        }
+                        else {
+                            $("#content__feedback").val("");
+                            $("#feedback_list").html("");
+                            $("#feedback_list").html(results);
+                        }
+                    },
+                    error: function (err) {
+                        alert("Lỗi");
+                        console.log(err);
+                    }
+                });
+            });
+            $("#thanh__toan__san__pham").click(function () {
+                var productid = @Model.ProductId;
+                var soluong = $("#txtsoluong").val();
+                $.ajax({
+                    url: '/ShoppingCart/GetUrlThanhToan',
+                    type:'post',
+                    datatype:'json',
+                    async:true,
+                    data: {
+                        productid: productid,
+                        soluong: soluong,
+                    },
+                    success: function (results) {
+                        window.location.href=results.url;
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        alert(err);
+                    }
+                });
+            })
+        });
+    </script>
+}

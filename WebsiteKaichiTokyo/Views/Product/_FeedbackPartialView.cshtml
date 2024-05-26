@@ -1,0 +1,19 @@
+﻿@model List<Feedback>
+
+@if(Model!=null && Model.Count > 0)
+{
+    @foreach(var item in Model)
+    {
+        <div class="card mt-2" style="border: 1px solid #17a2b8">
+            <div class="row m-1">
+                <div class="col-2">
+                    <img width="85" height="85" class="rounded-circle" style="object-fit:cover" src="~/images/customers/@item.Customer.Avatar" />
+                </div>
+                <div class="col-10">
+                    <h6 class="mb-1">@item.Customer.FullName</h6>
+                    <p>@item.Comment</p>
+                </div>
+            </div>
+        </div>
+    }
+}

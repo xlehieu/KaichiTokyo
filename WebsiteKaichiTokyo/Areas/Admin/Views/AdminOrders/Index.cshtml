@@ -1,0 +1,111 @@
+﻿@using PagedList.Core.Mvc;
+@model PagedList.Core.PagedList<Order>
+
+@{
+    var currentPage = ViewBag.CurrentPage;
+    string currency = "₫";
+    ViewData["Title"] = "Danh sách hóa đơn - trang "+ currentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Danh sách hóa đơn - trang: @currentPage</h1>
+</div>
+<div class="section-body">
+    <div class="card">
+        <div class="card-header">
+            
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" style="font-size:12px">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                            <th class="text-center"><i class="fa fas-th"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.OrderId</td>
+                                    <td>@item.OrderDate</td>
+                                    @if (item.TransactStatus != null)
+                                    {
+                                        @switch (item.TransactStatusId)
+                                        {
+                                            case 1:
+                                                <td class="text-success">@item.TransactStatus.Status</td>
+                                                break;
+                                            case 2:
+                                                <td class="text-success">@item.TransactStatus.Status</td>
+                                                break;
+                                            default:
+                                                <td class="text-warning">@item.TransactStatus.Status</td>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="text-secondary">Chưa có trạng thái đơn hàng</td>
+                                    }
+                                    <td>@item.Total.Value.ToString("N0")@currency</td>
+                                    <td>
+                                        <a asp-action="Details" class="btn btn-order-index btn-warning" asp-route-id="@item.OrderId"><i class="fa fa-eye space-icon"></i>Xem đơn</a>
+                                        <div class="btn btn-order-index btn-success" data-orderid="@item.OrderId"><i class="fa fa-pencil space-icon"></i>Sửa & Cập nhật trạng thái</div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div aria-label="Page navigation example" class="card-footer text-right">
+                <nav class="d-inline-block">
+                    <ul class="pagination mb-0">
+                        <pager list="@Model" asp-area="Admin" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" asp-controller="AdminPages" asp-action="Index"></pager>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="edit__order__overlay"></div>
+<div class="edit__order__wrapper" id="render_edit_partial">
+
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btn-order-index").click(function () {
+                var orderId = $(this).data("orderid");
+                $.ajax({
+                    url:"/Admin/Search/EditOrder",
+                    type:'post',
+                    datatype :'json',
+                    data: {
+                        orderid: orderId
+                    },
+                    async:true,
+                    success: function (result) {
+                        $("#render_edit_partial").html("");
+                        $("#render_edit_partial").html(result);
+                    },
+                    error: function (err) {
+                        alert("Lỗi: " + err);
+                        console.log(err);
+                    }
+                });
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,65 @@
+﻿.border__header {
+    border-width: 0px;
+    border-bottom-width: 0.2px;
+    border-color: #d5ddd5;
+    border-style: solid;
+}
+.white__color__link a{
+    color: #fff;
+}
+.white__color__link h2{
+    color: #fff;
+}
+.white__color__link span{
+    color: #fff;
+}
+.white__color__link a:after{
+    background:#fff;
+}
+.content-detail-sapo {
+    color: #404040;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.625rem;
+    margin: 1.25rem 0;
+}
+.color-text-primary {
+    color: #338218;
+}
+.product__discount__item__text span span {
+    color: #338218;
+    font-size: 14px;
+}
+.color-text-price {
+    color: #ff5230;
+}
+.pagination li .page-link{
+    padding: .26rem .75rem;
+}
+.section-title h2 {
+    color: #DD3600;
+}
+.big-icon {
+    font-size: 20px;
+    padding-right: 5px;
+}
+.btn-order-index {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 24px;
+    padding: .2rem .7rem;
+    cursor:pointer;
+}
+.plus{
+    cursor:pointer;
+}
+.minus{
+    cursor:pointer;
+}
+.total-checkout-minicart {
+    color: #DD3600;
+    font-weight:600;
+}
+#minicart{
+    width:440px;
+}

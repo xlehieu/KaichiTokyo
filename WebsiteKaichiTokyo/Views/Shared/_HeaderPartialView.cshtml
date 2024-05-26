@@ -1,0 +1,210 @@
+﻿<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+    <div class="humberger__menu__logo">
+        <a asp-action="Index" asp-controller="Home"><img src="img/logo.png" alt="Về trang chủ nào bạn yêu"></a>
+    </div>
+    <div class="humberger__menu__cart">
+        <ul>
+            <li><a href="/San-pham-yeu-thich"><i class="fa fa-heart"></i></a></li>
+            <li><a href="/Gio-hang"><i class="fa fa-shopping-bag"></i></a></li>
+        </ul>
+    </div>
+    <div class="humberger__menu__widget">
+        @* <div class="header__top__right__language">
+        <img src="img/language.png" alt="">
+        <div>English</div>
+        <span class="arrow_carrot-down"></span>
+        <ul>
+        <li><a href="#">Spanis</a></li>
+        <li><a href="#">English</a></li>
+        </ul>
+        </div> *@
+        <div>
+            @if (User.Identity.IsAuthenticated && User.Claims.Any(x => x.Type == "CustomerId"))
+            {
+                <a href="/My-account"><i class="fa fa-user"></i> Tài khoản của tôi</a>
+            }
+            else
+            {
+                <ul style="list-style:none">
+                    <li><a href="/Dang-ky"><i class="fa fa-user"></i> Đăng ký tài khoản</a></li>
+                    <li><a href="/Dang-nhap"><i class="fa fa-user"></i> Đăng nhập</a></li>
+                </ul>
+            }
+        </div>
+    </div>
+    <nav class="humberger__menu__nav mobile-menu">
+        <ul>
+            <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+            <li><a href="/San-pham">Cửa hàng</a></li>
+            <li>
+                <a href="#">Pages</a>
+                <ul class="header__menu__dropdown">
+                    <li><a href="/Gio-hang">Giỏ hàng</a></li>
+                    <li><a href="/Thanh-toan-gio-hang">Thanh toán</a></li>
+                    <li><a href="/Blogs">Blog</a></li>
+                </ul>
+            </li>
+            <li><a href="/Blogs">Blog</a></li>
+            <li><a href="/Lien-he">Liên hệ</a></li>
+        </ul>
+    </nav>
+    <div id="mobile-menu-wrap"></div>
+    <div class="header__top__right__social">
+        <a href="https://www.facebook.com/lexuan.hieu.92167"><i class="fa fa-facebook"></i></a>
+        <a href="https://www.instagram.com/lxhhhieu/"><i class="fa fa-instagram"></i></a>
+    </div>
+    <div class="humberger__menu__contact">
+        <ul>
+            <li><i class="fa fa-envelope"></i> xlehieu@gmail.com|huycoi103@gmail.com</li>
+            <li>Cửa hàng của mọi nhà</li>
+        </ul>
+    </div>
+</div>
+<!-- Humberger End -->
+<!-- Shopping cart -->
+<div class="shopping__cart__overlay"></div>
+<div class="shopping__cart__wrapper pl-3" id="minicart">
+    @await Component.InvokeAsync("MiniCart")
+</div>
+<!-- Shopping cart -->
+@* <div class="filter__wrapper pl-2">
+    <div class="row">
+        <div class="col-12">
+            <p>Đã chọn:</p>
+            <hr />
+        </div>
+        <div class="col-12">
+            <p>Danh mục sản phẩm</p>
+        </div>
+    </div>
+</div>
+ *@
+<header class="header white__bk">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i>xlehieu@gmail.com | huycoi103@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="https://www.facebook.com/lexuan.hieu.92167" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/lxhhhieu/" target="_blank"><i class="fa fa-instagram"></i></a>
+                        </div>
+                        @* <div class="header__top__right__language">
+                        <img src="img/language.png" alt="">
+                        <div>English</div>
+                        <span class="arrow_carrot-down"></span>
+                        <ul>
+                        <li><a href="#">Spanis</a></li>
+                        <li><a href="#">English</a></li>
+                        </ul>
+                        </div> *@
+                        <div class="header__top__right__auth">
+                            @if (User.Identity.IsAuthenticated && User.Claims.Any(x => x.Type == "CustomerId"))
+                            {
+                                <a href="/My-account"><i class="fa fa-user"></i> Tài khoản của tôi</a>
+                            }
+                            else
+                            {
+                                <div>Tài khoản</div>
+                                <span class="arrow_carrot-down"></span>
+                                <ul>
+                                    <li><a href="/Dang-ky"><i class="fa fa-user"></i> Đăng ký tài khoản</a></li>
+                                    <li><a href="/Dang-nhap"><i class="fa fa-user"></i> Đăng nhập</a></li>
+                                </ul>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="header__logo">
+                    <a asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <nav class="header__menu">
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li><a asp-controller="Product" asp-action="Index">Cửa hàng</a></li>
+                        <li>
+                            <a href="#">Trang</a>
+                            <ul class="header__menu__dropdown">
+                                <li><a href="/Pages/huong-dan-mua-hang">Hướng dẫn mua hàng</a></li>
+                                <li><a href="/Gio-hang">Giỏ hàng</a></li>
+                                <li><a href="/Blogs">Blogs</a></li>
+                            </ul>
+                        </li>
+                        <li><a asp-area="" asp-controller="Blog" asp-action="Index">Blog</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="header__cart">
+                    <ul>
+                        <li><a href="/San-pham-yeu-thich" id="favourite"><i class="fa fa-heart"></i> @await Component.InvokeAsync("NumberFavourite")</a></li>
+                        <li><div class="shopping__cart" id="numbercart"><i class="fa fa-shopping-bag"></i>@await Component.InvokeAsync("NumberCart")</div></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<section class="hero hero-normal border__header white__bk">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Danh mục sản phẩm</span>
+                    </div>
+                    @await Component.InvokeAsync("CategoryMenu")
+                </div>
+            </div>
+            @* <div class="col-1 p-0">
+            <div class="btn btn-outline-success filter_product" style="font-size:16px;padding:10px 13px">
+            <i class="fa fa-filter"></i>
+            Bộ lọc
+            </div>
+            </div> *@
+            <div class="col-lg-9 col-md-12 col-sm-12">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form asp-action="SearchProduct" asp-controller="SearchProduct">
+                            <input type="text" name="keyword" id="search__bar" placeholder="Bạn cần tìm gì?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                        <div class="suggest_block mt-1 card card-info p-1" id="suggest__product">
+                        </div>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0355 055 556</h5>
+                            <h5>0374 297 413</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

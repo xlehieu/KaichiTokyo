@@ -1,0 +1,139 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Product>
+@{
+    int currentPage = ViewBag.CurrentPage;
+    int prePage = currentPage - 1;
+    int nextPage = currentPage + 1;
+    string phanTram = "%";
+    string currency = "₫";
+}
+@if (Model != null && Model.Count > 0)
+{
+    <div class="filter__item">
+        <div class="row">
+            <div class="col-4 col-md-5">
+                <div class="filter__sort">
+                    <span>Sắp xếp theo</span>
+                    <select>
+                        <option value="0">Tên sản phẩm A-Z</option>
+                        <option value="0">Tên sản phẩm Z-A</option>
+                        <option value="0">Giá từ thấp đến cao</option>
+                        <option value="0">Giá từ cao đến thấp</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4 col-md-4">
+                <div class="filter__found">
+                    <h6>Tìm thấy <span>@Model.Count</span>sản phẩm</h6>
+                </div>
+            </div>
+            <div class="col-4 col-md-3">
+                <div class="filter__option">
+                    <span class="icon_grid-2x2"></span>
+                    <span class="icon_ul"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                int? price = item.Price;
+                if (item.Price.HasValue && item.Discount > 0)
+                {
+                    price = item.Price - (item.Price * item.Discount) / 100;
+                }
+                string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                <div class="col-4 col-md-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic">
+                            <a href="@url">
+                                <img src="~/images/products/@item.Thumb">
+                            </a>
+                            @if (item.Discount.HasValue)
+                            {
+                                <div class="product__item__discount__percent">@item.Discount@phanTram</div>
+                            }
+                            <ul class="product__item__pic__hover">
+                                <li><div class="add__to__favourite" data-productid="@item.ProductId"><i class="fa fa-heart"></i></div></li>
+                                <li><a href="@url"><i class="fa fa-retweet"></i></a></li>
+                                <li><div class="add__to__cart" data-productid="@item.ProductId"><i class="fa fa-shopping-cart"></i></div></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a href="@url">@item.ProductName</a></h6>
+                            <h5>@price.Value.ToString("N0")@currency</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="col-12">
+        <nav class="pager-container">
+            <ul class="pagination">
+                @if (currentPage == 1)
+                {
+                    <li class="active page-item">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <div class="page-link page-link-filter" data-pageval="2">2</div>
+                    </li>
+                }
+                else if (currentPage > 1)
+                {
+                    <li class="page-item">
+                        <div class="page-link page-link-filter" data-pageval="@prePage">@prePage</div>
+                    </li>
+                    <li class="active page-item">
+                        <span class="page-link">@currentPage</span>
+                    </li>
+                    <li class="page-item">
+                        <div class="page-link page-link-filter" data-pageval="@currentPage">@nextPage</div>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".page-link-filter").click(function () {
+                var selectCategory = $("input[type='checkbox'][name='cats']:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                var minamount = $("#minamount").val();
+                var maxamount = $("#maxamount").val();
+                var page = $(this).data("pageval");
+                $.ajax({
+                    url: '/SearchProduct/FilterProduct',
+                    type: 'post',
+                    datatype: 'json',
+                    data: {
+                        catId: selectCategory,
+                        pageNumber: page,
+                        minamount: minamount,
+                        maxamount: maxamount,
+                    },
+                    async: true,
+                    success: function (result) {
+                        $('#filter__product__result').html("");
+                        $('#filter__product__result').html(result);
+                    },
+                    error: function (err) {
+                        alert("Lỗi");
+                        console.log(err);
+                    }
+                });
+            });
+        })
+    </script>
+}
+else
+{
+    <div>
+        <h4>Hiện tại chưa tìm thấy sản phẩm</h4>
+    </div>
+}

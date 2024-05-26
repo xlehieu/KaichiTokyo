@@ -1,0 +1,543 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Product>
+@{
+    int currentPage = ViewBag.CurrentPage;
+    int nextPage = currentPage + 1;
+    int previousPage = currentPage - 1;
+    ViewData["Title"] = "Cửa hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string currency = "₫";
+    string phanTram = "%";
+    List<Product> saleProductList = ViewBag.SaleProductList;
+    List<Product> newestProductList = ViewBag.NewestProductList;
+    List<Category> catList = ViewBag.CatList;
+}
+@section Styles{
+    <style>
+        .bbb_viewed {
+            padding-top: 51px;
+            padding-bottom: 60px;
+        }
+
+        .bbb_main_container {
+            background-color: #fff;
+            padding: 11px;
+        }
+
+        .bbb_viewed_title_container {
+            border-bottom: solid 1px #dadada
+        }
+
+        .bbb_viewed_title {
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+
+        .bbb_viewed_nav_container {
+            position:absolute;
+            justify-content:space-between;
+            display:flex;
+        }
+
+        .bbb_viewed_nav {
+            display: inline-block;
+            cursor: pointer
+        }
+
+            .bbb_viewed_nav i {
+                color: #dadada;
+                font-size: 18px;
+                padding: 5px;
+                -webkit-transition: all 200ms ease;
+                -moz-transition: all 200ms ease;
+                -ms-transition: all 200ms ease;
+                -o-transition: all 200ms ease;
+                transition: all 200ms ease
+            }
+
+            .bbb_viewed_nav:hover i {
+                color: #606264
+            }
+
+        .bbb_viewed_prev {
+        }
+
+        .bbb_viewed_slider_container {
+            padding-top: 13px;
+        }
+
+        .bbb_viewed_item {
+            width: 100%;
+            background: #FFFFFF;
+            border-radius: 2px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            padding-left: 30px;
+            padding-right: 30px
+        }
+
+        .bbb_viewed_image {
+            width: 150px;
+            height: 185px;
+        }
+
+            .bbb_viewed_image img {
+                display: block;
+                max-width: 100%
+            }
+
+        .bbb_viewed_content {
+            width: 100%;
+            margin-top: 25px
+        }
+
+        .bbb_viewed_price {
+            font-size: 16px;
+            color: #000000;
+            font-weight: 500
+        }
+
+        .bbb_viewed_item.discount .bbb_viewed_price {
+            color: #df3b3b
+        }
+
+        .bbb_viewed_price span {
+            text-decoration: line-through;
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.6);
+            margin-left: 8px
+        }
+
+
+        .bbb_viewed_name {
+            margin-top: 3px
+        }
+
+            .bbb_viewed_name a {
+                font-size: 14px;
+                color: #000000;
+                -webkit-transition: all 200ms ease;
+                -moz-transition: all 200ms ease;
+                -ms-transition: all 200ms ease;
+                -o-transition: all 200ms ease;
+                transition: all 200ms ease
+            }
+
+                .bbb_viewed_name a:hover {
+                    color: #338218;
+                }
+
+        .item_marks {
+            position: absolute;
+            top: 18px;
+            left: 18px
+        }
+
+        .item_mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 40px;
+            text-align: center
+        }
+
+        .item_discount {
+            background: #df3b3b;
+            margin-right: 5px
+        }
+
+        .item_new {
+            background: #338218;
+        }
+
+        .bbb_viewed_item.discount .item_discount {
+            display: inline-block
+        }
+
+        .bbb_viewed_item.is_new .item_new {
+            display: inline-block
+        }
+    </style>
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumbProduct.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb__text white__color__link">
+                    <h2>Cửa hàng Kaichi Tokyo</h2>
+                    <div class="breadcrumb__option mt-2">
+                        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <span>Cửa hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+<section class="product spad pb-3">
+    <div class="container">
+        <div class="row white__bk pt-3 pb-2">
+            <div class="col-lg-3 col-md-5 col-sm-12">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4><i class="fa fa-filter"></i> Bộ lọc</h4>
+                        <h4>Danh mục</h4>
+                        <ul class="filter__category__list">
+                            @if (catList != null && catList.Count > 0)
+                            {
+                                @foreach (var item in catList)
+                                {
+                                    <li>
+                                        <label for="@item.CatId">
+                                            <input type="checkbox" name="cats" value="@item.CatId" id="cat-@item.CatId">
+                                            <span>@item.CatName</span>
+                                        </label>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Giá</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="10000" data-max="3000000">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7 col-sm-12" id="filter__product__result">
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2>Khuyến mại</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            @if (saleProductList != null && saleProductList.Count > 0)
+                            {
+                                @foreach (var item in saleProductList)
+                                {
+                                    if (item.Discount > 0)
+                                    {
+                                        string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                                        int? price = item.Price;
+                                        if (item.Price.HasValue && item.Discount > 0)
+                                        {
+                                            price = item.Price - (item.Price * item.Discount) / 100;
+                                        }
+                                        <div class="col-lg-4">
+                                            <div class="product__discount__item">
+                                                <div class="product__discount__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                                    <div class="product__discount__percent">@item.Discount@phanTram</div>
+                                                    <ul class="product__item__pic__hover">
+                                                        <li><div class="add__to__favourite" data-productid="@item.ProductId"><i class="fa fa-heart"></i></div></li>
+                                                        <li><a href="@url"><i class="fa fa-retweet"></i></a></li>
+                                                        <li><div class="add__to__cart" data-productid="@item.ProductId"><i class="fa fa-shopping-cart"></i></div></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product__discount__item__text">
+                                                    <span class="text-dark">
+                                                        Danh mục: @if (item.Cat != null)
+                                                        {
+                                                            @item.Cat.CatName
+                                                        }
+                                                    </span>
+                                                    <h5><a class="text-primary" href="@url">@item.ProductName</a></h5>
+                                                    <div class="product__item__price">@price.Value.ToString("N0")@currency<span>@item.Price@currency</span></div>
+                                                    <span>@item.ShortDesc</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+<div class="bbb_viewed pt-3 pb-3">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="bbb_main_container">
+                    <div class="section-title product__discount__title text-center mb-3">
+                        <h2>SẢN PHẨM MỚI NHẤT</h2>
+                    </div>
+                    <div class="bbb_viewed_slider_container">
+                        <div class="owl-carousel owl-theme bbb_viewed_slider">
+                            @if (newestProductList != null && newestProductList.Count > 0)
+                            {
+                                @foreach (var item in newestProductList)
+                                {
+                                    if (item.Discount > 0)
+                                    {
+                                        string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                                        int? price = item.Price;
+                                        if (item.Price.HasValue && item.Discount > 0)
+                                        {
+                                            price = item.Price - (item.Price * item.Discount) / 100;
+                                        }
+
+                                        <div class="owl-item">
+                                            <div class="bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="bbb_viewed_image"><img src="~/images/products/@item.Thumb" alt="@item.Title"></div>
+                                                <div class="bbb_viewed_content text-center">
+                                                    <div class="bbb_viewed_price">
+                                                        @if (item.Discount > 0 && price.HasValue)
+                                                        {
+                                                            @price.Value.ToString("N0")
+
+                                                            @currency
+                                                            <span>@item.Price.Value.ToString("N0")@currency</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            @item.Price.Value.ToString("N0")
+
+                                                            @currency
+                                                        }
+                                                    </div>
+                                                    <div class="bbb_viewed_name"><a href="@url">@item.ProductName</a></div>
+                                                </div>
+                                                <ul class="item_marks">
+                                                    @if (item.Discount > 0)
+                                                    {
+                                                        <li class="item_mark item_discount">@item.Discount@phanTram</li>
+                                                    }
+                                                    <li class="item_mark item_new">Mới</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--SẢN PHẨM MỚI NHẤT-->
+@* <section class="pt-3 pb-3">
+    <div class="container">
+        <div class="row pt-3 white__bk">
+            <div class="col-12" id="filter__product__result">
+                <div class="pb-3">
+                    <div class="section-title product__discount__title text-center">
+                        <h2>SẢN PHẨM MỚI NHẤT</h2>
+                    </div>
+                    <div class="multi-carousel" data-mdb-multi-carousel-init data-mdb-interval="3000" data-mdb-items="5">
+                        <div class="d-flex justify-content-center m-2 mb-3">
+                            <button class="carousel-control-prev btn btn-pink btn-floating mx-3" type="button" tabindex="0" data-mdb-slide="prev">
+                                <i class="fas fa-angle-left fa-lg"></i>
+                            </button>
+                            <button class="carousel-control-next btn btn-pink btn-floating mx-3" type="button" tabindex="0" data-mdb-slide="next">
+                                <i class="fas fa-angle-right fa-lg"></i>
+                            </button>
+                        </div>
+                        <div class="multi-carousel-inner">
+                            @if (newestProductList != null && newestProductList.Count > 0)
+                            {
+                                @foreach (var item in newestProductList)
+                                {
+                                    if (item.Discount > 0)
+                                    {
+                                        string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                                        int? price = item.Price;
+                                        if (item.Price.HasValue && item.Discount > 0)
+                                        {
+                                            price = item.Price - (item.Price * item.Discount) / 100;
+                                        }
+
+                                        <div class="multi-carousel-item">
+                                            <div class="card m-2">
+                                                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Square/img(4).jpg" alt="Card image cap" />
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Moda</h5>
+                                                    <p class="card-text">Plan B</p>
+                                                    <ul class="list-unstyled list-inline my-2">
+                                                        <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                                                        <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                                                        <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                                                        <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                                                        <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
+                                                    </ul>
+                                                    <p class="price mb-0">9,99 $</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</section> *@
+
+<!--DANH SÁCH SẢN PHẨM-->
+<section class="pt-3 pb-3">
+    <div class="container">
+        <div class="row pt-3 white__bk">
+            @* <div class="col-4 col-md-5 col-sm-7">
+                <div class="filter__sort">
+                    <span>Sắp xếp theo</span>
+                    <select>
+                        <option value="0">Tên sản phẩm A-Z</option>
+                        <option value="0">Tên sản phẩm Z-A</option>
+                        <option value="0">Giá từ thấp đến cao</option>
+                        <option value="0">Giá từ cao đến thấp</option>
+                    </select>
+                </div>
+            </div> *@
+            <div class="col-12">
+                <div class="filter__found">
+                    <h6>Tìm thấy <span>@Model.Count</span> sản phẩm</h6>
+                </div>
+            </div>
+            @* <div class="col-4 col-md-3 col-sm">
+            </div> *@
+        </div>
+        <div class="row white__bk bt-3 pb-3">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    int? price = item.Price;
+                    if (item.Price.HasValue && item.Discount > 0)
+                    {
+                        price = item.Price - (item.Price * item.Discount) / 100;
+                    }
+                    string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                    <div class="col-3 col-md-4 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                @if (item.Discount.HasValue)
+                                {
+                                    <div class="product__item__discount__percent">@item.Discount@phanTram</div>
+                                }
+                                <ul class="product__item__pic__hover">
+                                    <li><div class="add__to__favourite" data-productid="@item.ProductId"><i class="fa fa-heart"></i></div></li>
+                                    <li><a href="@url"><i class="fa fa-retweet"></i></a></li>
+                                    <li><div class="add__to__cart" data-productid="@item.ProductId"><i class="fa fa-shopping-cart"></i></div></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="@url">@item.ProductName</a></h6>
+                                <h5>@price.Value.ToString("N0")@currency</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="col-12">
+                <div class="product__pagination blog__pagination">
+                    <pager class="pager-container" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" list="@Model" asp-area="" asp-controller="Product" asp-action="Index" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("input[type='checkbox'][name='cats']").on("change", function () {
+                var selectCategory = $("input[type='checkbox'][name='cats']:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                if (selectCategory.length > 0) {
+                    $.ajax({
+                        url: '/SearchProduct/FilterProduct',
+                        type: 'post',
+                        datatype: 'json',
+                        data: {
+                            catId: selectCategory,
+                        },
+                        async: true,
+                        success: function (result) {
+                            $("#filter__product__result").html('');
+                            $("#filter__product__result").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            alert("Lỗi");
+                        }
+                    });
+                }
+                else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+
+            if ($('.bbb_viewed_slider').length) {
+                var viewedSlider = $('.bbb_viewed_slider');
+
+                viewedSlider.owlCarousel(
+                    {
+                        loop: true,
+                        margin: 30,
+                        autoplay: true,
+                        autoplayTimeout: 6000,
+                        nav: false,
+                        dots: false,
+                        responsive:
+                        {
+                            0: { items: 1 },
+                            575: { items: 2 },
+                            768: { items: 3 },
+                            991: { items: 4 },
+                            1199: { items: 6 }
+                        }
+                    });
+
+                if ($('.bbb_viewed_prev').length) {
+                    var prev = $('.bbb_viewed_prev');
+                    prev.on('click', function () {
+                        viewedSlider.trigger('prev.owl.carousel');
+                    });
+                }
+
+                if ($('.bbb_viewed_next').length) {
+                    var next = $('.bbb_viewed_next');
+                    next.on('click', function () {
+                        viewedSlider.trigger('next.owl.carousel');
+                    });
+                }
+            }
+
+
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+}

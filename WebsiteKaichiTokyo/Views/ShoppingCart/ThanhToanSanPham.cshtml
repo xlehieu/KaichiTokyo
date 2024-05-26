@@ -1,0 +1,168 @@
+﻿@model WebsiteKaichiTokyo.ViewModels.OrderViewVM
+@{
+    ViewData["Title"] = "Thanh toán hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<WebsiteKaichiTokyo.ViewModels.CartItem> gioHang = ViewBag.GioHang;
+    string currency = "₫";
+}
+@section Styles{
+    <style>
+        .typepayment_label {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .typePayment_select {
+            width: 150px;
+            padding: 5px 10px;
+        }
+
+            .typePayment_select span {
+                display: block;
+                text-align: center;
+                line-height: 30px;
+            }
+
+        #load_form_payment {
+            display: none
+        }
+    </style>
+}
+@if (gioHang != null && gioHang.Count > 0)
+{
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbProduct.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text white__color__link">
+                        <h2>Thanh toán</h2>
+                        <div class="breadcrumb__option">
+                            <a asp-action="Index" asp-controller="Home">Home</a>
+                            <span>Thanh toán</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6>
+                        <span class="icon_tag_alt"></span> Bạn có mã giảm giá không? <a href="#">Nhấp vào đây</a> để nhập mã của bạn
+                    </h6>
+                </div>
+            </div>
+            <div class="checkout__form">
+                <h4>Thông tin</h4>
+                <form method="post" asp-controller="ShoppingCart" asp-action="CheckOutSanPham">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="checkout__input">
+                                <p>Họ và tên<span>*</span></p>
+                                <input type="text" asp-for="CustomerName">
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Số điện thoại<span>*</span></p>
+                                <input type="text" asp-for="PhoneNumber">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Email<span>*</span></p>
+                                <input type="text" asp-for="Email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Địa chỉ<span>*</span></p>
+                                <input type="text" asp-for="Address">
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="checkout__order">
+                                <h4>Hóa đơn của bạn</h4>
+                                <div class="checkout__order__products">Sản phẩm <span>Tổng tiền</span></div>
+                                <ul>
+                                    @foreach (var item in gioHang)
+                                    {
+                                        <li>@item.Product.ProductName<span>@item.TotalMoney.ToString("N0")@currency</span></li>
+                                    }
+                                </ul>
+                                <div class="checkout__order__subtotal">Giá trước khi giảm <span>@gioHang.Sum(x=>x.Product.Price).Value.ToString("N0")</span></div>
+                                <div class="checkout__order__total">Giá sau khi giảm <span>@gioHang.Sum(x=>x.TotalMoney).ToString("N0")</span></div>
+                                @* <div class="checkout__input__checkbox">
+                            <label for="acc-or">
+                            Create an account?
+                            <input type="checkbox" id="acc-or">
+                            <span class="checkmark"></span>
+                            </label>
+                            </div>
+                            <p>
+                            Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua.
+                            </p>
+                            <div class="checkout__input__checkbox">
+                            <label for="payment">
+                            Check Payment
+                            <input type="checkbox" id="payment">
+                            <span class="checkmark"></span>
+                            </label>
+                            </div>
+                            <div class="checkout__input__checkbox">
+                            <label for="paypal">
+                            Paypal
+                            <input type="checkbox" id="paypal">
+                            <span class="checkmark"></span>
+                            </label>
+                            </div> *@
+                                <div class="form-group">
+                                    <label class="typepayment_label">Hình thức thanh toán</label>
+                                    <select class="form-control typePayment_select" asp-for="TypePayment" id="drTypePayment">
+                                        <option value="1" selected>COD</option>
+                                        <option value="2">Chuyển khoản</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="load_form_payment">
+                                    <h4><label>Chọn phương thức thanh toán:</label></h4>
+                                    <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+                                    <label><input type="radio" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR</label>
+                                    <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                                    <label><input type="radio" asp-for="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR</label><br />
+                                    <label><input type="radio" asp-for="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa</label><br />
+                                    <label><input type="radio" asp-for="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế</label><br />
+                                </div>
+                                <input type="hidden" name="productid" value="@Model.ProductId">
+                                <input type="hidden" name="soluong" value="@Model.SoLuong">
+                                <button type="submit" class="site-btn">ĐẶT HÀNG</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+}
+else
+{
+    <h2>Bạn chưa có sản phẩm trong giỏ hàng, <a href="/San-pham" class="text-primary">đi tìm kiếm sản phẩm nào!!</a></h2>
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '#drTypePayment', function () {
+                var type = $(this).val();
+                $('#load_form_payment').hide();
+                if (type == 2) {
+                    $('#load_form_payment').show();
+                }
+            });
+        });
+    </script>
+}

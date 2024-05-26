@@ -1,0 +1,74 @@
+/**
+ *
+ * You can write your CSS code here, DO NOT touch the default JavaScript file
+ * because it will make it harder for you to update.
+ * 
+ */
+
+/*# sourceMappingURL=custom.css.map */
+.zindex91{
+    z-index:100;
+}
+.space-icon {
+    margin-right: 3px;
+}
+.width-column-table{
+    max-width: 270px;
+}
+.edit__order__overlay {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    content: "";
+    z-index: 198;
+    visibility: hidden;
+    -webkit-transition: all, 0.6s;
+    -moz-transition: all, 0.6s;
+    -ms-transition: all, 0.6s;
+    -o-transition: all, 0.6s;
+    transition: all, 0.6s;
+}
+
+    .edit__order__overlay.active {
+        visibility: visible;
+    }
+
+.edit__order__wrapper {
+    width: 600px;
+    background: #ffffff;
+    position: fixed;
+    top: -1000px;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 200;
+    padding: 30px;
+    padding-top: 50px;
+    opacity: 0;
+    display: block;
+    -webkit-transition: all, 0.6s;
+    -moz-transition: all, 0.6s;
+    -ms-transition: all, 0.6s;
+    -o-transition: all, 0.6s;
+    transition: all, 0.6s;
+}
+
+    .show__edit__order__wrapper {
+        opacity: 1;
+        top:0px;
+        left: 400px;
+    }
+
+.form-control .dropdown-item {
+    font-weight: 600;
+    font-size: 16px;
+    color: #338218;
+}
+.selectMonth option {
+    font-weight: 600;
+    font-size: 16px;
+    color: #338218;
+}
+

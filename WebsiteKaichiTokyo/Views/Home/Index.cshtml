@@ -1,0 +1,276 @@
+﻿@model WebsiteKaichiTokyo.ViewModels.HomeViewVM
+@{
+    ViewData["Title"] = "Trang chủ Kaichi Tokyo";
+    string currency = "₫";
+    int countLasttest = 0;
+    int countTopRate = 0;
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+}
+@if (Model != null)
+{
+    <section class="pt-3">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="colzz-12 swiper-slide">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            @if (Model.Sliders != null && Model.Sliders.Count > 0)
+                            {
+                                @foreach (var item in Model.Sliders)
+                                {
+                                    <div class="swiper-slide">
+                                        <a href="@item.Alias">
+                                            <img src="~/images/sliders/@item.Thumb">
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section Begin -->
+    <section class="categories pt-5">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>DANH MỤC SẢN PHẨM</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    @foreach (var item in Model.LsHomeProductVM)
+                    {
+                        string url = $"/Danh-muc/{item.Category.Alias}?catId={item.Category.CatId}";
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="categories__item set-bg" data-setbg="/images/categories/@item.Category.Thumb">
+                                <h5><a href="@url">@item.Category.CatName</a></h5>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+    <!-- Featured Section Begin -->
+    <section class="featured spad">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>SẢN PHẨM ĐÁNG CHÚ Ý</h2>
+                    </div>
+                    <div class="featured__controls">
+                        <ul>
+                            <li class="category-item active" data-catid="0">All</li>
+                            @foreach (var item in Model.LsHomeProductVM)
+                            {
+                                <li class="category-item" data-catid="@item.Category.CatId">@item.Category.CatName</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3 white__bk" id="product-list">
+                @if (Model.AllProduct.Count > 0)
+                {
+                    @foreach (var item in Model.AllProduct)
+                    {
+                        int? price = item.Price != null ? item.Price : 0;
+                        if (item.Price != null && item.Discount != null)
+                        {
+                            price = item.Price - (item.Price * item.Discount) / 100;
+                        }
+                        string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="featured__item">
+                                <div class="featured__item__pic set-bg" data-setbg="images/products/@item.Thumb">
+                                    <ul class="featured__item__pic__hover">
+                                        <li><div class="add__to__favourite" data-productid="@item.ProductId"><i class="fa fa-heart"></i></div></li>
+                                        <li><a href="@url"><i class="fa fa-retweet"></i></a></li>
+                                        <li><div class="add__to__cart" data-productid="@item.ProductId"><i class="fa fa-shopping-cart"></i></div></li>
+                                    </ul>
+                                    @if (item.Discount > 0)
+                                    {
+                                        <div class="product__discount__percent">@item.Discount%</div>
+                                    }
+                                </div>
+                                <div class="featured__item__text">
+                                    <h6><a href="@url">@item.ProductName</a></h6>
+                                    <h5>@price.Value.ToString("N0")@currency</h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </section>
+    <!-- Featured Section End -->
+    <!-- Latest Product Section Begin -->
+    <section class="latest-product spad">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="latest-product__text">
+                        <h4>Sản phẩm mới nhất</h4>
+                        <div class="latest-product__slider owl-carousel owl-loaded owl-drag">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage">
+                                    @foreach (var item in Model.LastestProduct)
+                                    {
+                                        <div class="owl-item">
+                                            <div class="latest-prdouct__slider__item">
+                                                @for (int i = countLasttest; i < Model.LastestProduct.Count; i++)
+                                                {
+                                                    int? price = Model.LastestProduct[countLasttest].Price != null ? Model.LastestProduct[countLasttest].Price : 0;
+                                                    if (Model.LastestProduct[countLasttest].Price != null && Model.LastestProduct[countLasttest].Discount != null)
+                                                    {
+                                                        price = Model.LastestProduct[countLasttest].Price - (Model.LastestProduct[countLasttest].Price * Model.LastestProduct[countLasttest].Discount) / 100;
+                                                    }
+                                                    string url = $"/San-pham/{Model.LastestProduct[countLasttest].Alias}-{Model.LastestProduct[countLasttest].ProductId}";
+                                                    <a href="@url" class="latest-product__item">
+                                                        <div class="latest-product__item__pic">
+                                                            <img src="~/images/products/@Model.LastestProduct[countLasttest].Thumb" alt="@Model.LastestProduct[countLasttest].Title">
+                                                        </div>
+                                                        <div class="latest-product__item__text">
+                                                            <h6>@Model.LastestProduct[countLasttest].ProductName</h6>
+                                                            <span class="color-text-price">@price.Value.ToString("N0")@currency</span>
+                                                        </div>
+                                                    </a>
+                                                    countLasttest++;
+                                                    if (countLasttest % 3 == 0) break;
+                                                }
+                                            </div>
+                                        </div>
+                                        @if (countLasttest == Model.LastestProduct.Count) break;
+                                    }
+                                </div>
+                            </div>
+                            <div class="owl-nav">
+                                <button type="button" role="presentation" class="owl-prev">
+                                    <span class="fa fa-angle-left"><span></span></span>
+                                </button><button type="button" role="presentation" class="owl-next"><span class="fa fa-angle-right"><span></span></span></button>
+                            </div><div class="owl-dots disabled"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="latest-product__text">
+                        <h4>Sản phẩm đánh nhiều nhất</h4>
+                        <div class="latest-product__slider owl-carousel owl-loaded owl-drag">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage">
+                                    @foreach (var item in Model.TopRateProduct)
+                                    {
+                                        <div class="owl-item">
+                                            <div class="latest-prdouct__slider__item">
+                                                @for (int i = countTopRate; i < Model.TopRateProduct.Count; i++)
+                                                {
+                                                    int? price = Model.TopRateProduct[countTopRate].Price != null ? Model.TopRateProduct[countTopRate].Price : 0;
+                                                    if (Model.TopRateProduct[countTopRate].Price != null && Model.TopRateProduct[countTopRate].Discount != null)
+                                                    {
+                                                        price = Model.TopRateProduct[countTopRate].Price - (Model.TopRateProduct[countTopRate].Price * Model.TopRateProduct[countTopRate].Discount) / 100;
+                                                    }
+                                                    string url = $"/San-pham/{Model.TopRateProduct[countTopRate].Alias}-{Model.TopRateProduct[countTopRate].ProductId}";
+                                                    <a href="@url" class="latest-product__item">
+                                                        <div class="latest-product__item__pic">
+                                                            <img src="~/images/products/@Model.TopRateProduct[countTopRate].Thumb" alt="@Model.TopRateProduct[countTopRate].Title">
+                                                        </div>
+                                                        <div class="latest-product__item__text">
+                                                            <h6>@Model.TopRateProduct[countTopRate].ProductName</h6>
+                                                            <span class="color-text-price">@price.Value.ToString("N0")@currency</span>
+                                                        </div>
+                                                    </a>
+                                                    countTopRate++;
+                                                    if (countTopRate % 3 == 0) break;
+                                                }
+                                            </div>
+                                        </div>
+                                        @if (countTopRate == Model.TopRateProduct.Count) break;
+                                    }
+                                </div>
+                            </div>
+                            <div class="owl-nav">
+                                <button type="button" role="presentation" class="owl-prev">
+                                    <span class="fa fa-angle-left"><span></span></span>
+                                </button><button type="button" role="presentation" class="owl-next"><span class="fa fa-angle-right"><span></span></span></button>
+                            </div><div class="owl-dots disabled"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Latest Product Section End -->
+    <!-- Blog Section Begin -->
+    <section class="from-blog spad">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="col-12">
+                    <div class="section-title from-blog__title">
+                        <h2>TIN TỨC</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-3 white__bk">
+                @foreach (var item in Model.TinTucs)
+                {
+                    string url = $"/News/{item.Alias}-{item.PostId}";
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic">
+                                <img src="~/images/news/@item.Thumb" alt="">
+                            </div>
+                            <div class="blog__item__text">
+                                <ul>
+                                    <li><i class="fa fa-calendar-o"></i> @item.CreateDate.Value.ToShortDateString()</li>
+                                    @* <li><i class="fa fa-comment-o"></i> 5</li> *@
+                                </ul>
+                                <h5><a href="@url">@item.Title</a></h5>
+                                <p>@item.Scontents</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- Blog Section End -->
+}
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="~/js/slider.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.category-item').click(function () {
+                var catId = $(this).data('catid');
+                $.ajax({
+                    url: '/Home/FilterCategory',
+                    type: 'Post',
+                    datatype: 'json',
+                    data: {
+                        catId: catId,
+                    },
+                    async: true,
+                    success: function (results) {
+                        $('#product-list').html("");
+                        $('#product-list').html(results);
+                    },
+                    error: function (xhr) {
+                        alert("Lỗi");
+                    },
+                });
+            });
+        });
+    </script>
+}

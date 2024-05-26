@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "VnPayReturn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="pt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" style="display:flex;justify-content:center">
+                @Html.Raw(ViewBag.Icon)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.Raw(ViewBag.InnerText)
+                @if (ViewBag.InvoiceMonney != null)
+                {
+                    <h4 class="text-center mt-3">@ViewBag.InvoiceMonney</h4>
+                }
+                <a class="btn btn-info mt-3 mb-5" asp-action="Index" asp-controller="Home">Trang chủ</a>
+            </div>
+        </div>
+    </div>
+</section>

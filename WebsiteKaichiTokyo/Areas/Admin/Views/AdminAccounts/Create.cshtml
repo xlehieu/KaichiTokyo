@@ -1,0 +1,77 @@
+﻿@model WebsiteKaichiTokyo.Models.Account
+
+@{
+    ViewBag.Title = "Thêm tài khoản mới";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Thêm mới tài khoản</h1>
+</div>
+<div class="section-body">
+    <div class="card card-success">
+        <form asp-action="Create" class="forms-sample">
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Password">Mật khẩu</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                        <input type="password" placeholder="Nhập mật khẩu" class="form-control pwstrength" asp-for="Password" data-indicator="pwindicator">
+                    </div>
+                    <div id="pwindicator" class="pwindicator">
+                        <div class="bar"></div>
+                        <div class="label"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FullName" class="control-label">Họ và tên</label>
+                    <input asp-for="FullName" placeholder="Nhập họ và tên" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone">Số điện thoại</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                        </div>
+                        <input type="text" asp-for="Phone" placeholder="Nhập số điện thoại" class="form-control phone-number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                @@
+                            </div>
+                        </div>
+                        <input asp-for="Email" placeholder="Nhập địa chỉ email" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="control-label">Trạng thái</div>
+                    <label class="custom-switch mt-2">
+                        <input asp-for="Active" class="custom-switch-input">
+                        <span class="custom-switch-indicator"></span>
+                        <span class="custom-switch-description">Hoạt động</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoleId" class="control-label">Quyền truy cập</label>
+                    <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-success" type="submit"><i class="fa fa-plus-square space-icon"></i>Thêm tài khoản</button>
+                <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+

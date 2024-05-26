@@ -1,0 +1,45 @@
+﻿@model WebsiteKaichiTokyo.Models.Contact
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>
+        Chi tiết thông tin liên hệ No. @Model.ContactId
+    </h1>
+</div>
+<div class="section-body">
+    <div class="card card-info">
+        <div class="card-body p-0">
+            <table class="table table-striped table-bordered text-dark">
+                <tbody>
+                    <tr>
+                        <td>Họ và tên</td>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <td>Số điện thoại</td>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <td>Emai</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày liên hệ</td>
+                        <td>@Model.CreateDate</td>
+                    </tr>
+                    <tr>
+                        <td>Tiêu đề</td>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <td>Nội dung</td>
+                        <td>@Model.Messages</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model WebsiteKaichiTokyo.Models.Category
+
+@{
+    ViewData["Title"] = "Xóa danh mục " + Model.CatName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Bạn có muốn xóa danh mục @Model.CatName</h1>
+</div>
+<div class="section-body">
+    <div class="card card-danger">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-md text-dark">
+                    <tr>
+                        <td>Mã danh mục:</td>
+                        <td>@Model.CatId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên danh mục:</td>
+                        <td>@Model.CatName</td>
+                    </tr>
+                    <tr>
+                        <td>Tiêu đề danh mục:</td>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả danh mục:</td>
+                        <td>@Html.Raw(Model.Description)</td>
+                    </tr>
+                    <tr>
+                        <td>Danh mục cha:</td>
+                        @if (Model.ParentId != 0)
+                        {
+                            <td>@Model.CatParentName</td>
+                        }
+                        else
+                        {
+                            <td>Không có danh mục cha</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>Levels:</td>
+                        <td>@Model.Levels</td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái</td>
+                        <td>
+                            @if (Model.Published)
+                            {
+                                <div class="badge badge-success">Hoạt động</div>
+                            }
+                            else
+                            {
+                                <div class="badge badge-danger">Không hoạt động</div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hình ảnh danh mục:</td>
+                        <td><img src="~/images/categories/@Model.Thumb" width="200" height="200" alt="@Model.Title" /></td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả SEO:</td>
+                        <td>@Model.MetaDesc</td>
+                    </tr>
+                    <tr>
+                        <td>Từ khóa SEO:</td>
+                        <td>@Model.MetaKey</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="CatId"/>
+                <button class="btn btn-danger" type="submit"><i class="fa fa-trash space-icon"></i>Xác nhận xóa</button>
+                <a asp-action="Index" class="btn btn-dark"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

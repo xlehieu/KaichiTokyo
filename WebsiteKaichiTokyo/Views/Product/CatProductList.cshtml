@@ -1,0 +1,201 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Product>
+@{
+    Category cat = ViewBag.Category;
+    ViewData["Title"] = "Cửa hàng - Danh mục: " +cat.CatName;
+    string currency = "đ";
+    string phanTram = "%";
+    List<Product> discountProductList = ViewBag.DiscountProductList;
+    List<Category> catList = ViewBag.CatList;
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbProduct.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb__text white__color__link">
+                    <h2>Cửa hàng Kaichi Tokyo - Danh mục: @cat.CatName</h2>
+                    <div class="breadcrumb__option mt-2">
+                        <a asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <span>@cat.CatName</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row white__bk pt-3 pb-5">
+            <div class="col-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Gian hàng</h4>
+                        <ul>
+                            @if (catList != null && catList.Count > 0)
+                            {
+                                @foreach (var item in catList)
+                                {
+                                    <li>
+                                        <input type="checkbox" name="cats" value="@item.CatId" id="cat-@item.CatId">
+                                        <label for="@item.CatId">@item.CatName</label>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Giá</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="10000" data-max="3000000">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9 col-md-7" id="filter__product__result">
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2>Khuyến mại</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            @if (discountProductList != null && discountProductList.Count > 0)
+                            {
+                                @foreach (var item in discountProductList)
+                                {
+                                    if (item.Discount > 0)
+                                    {
+                                        string url = $"/San-pham/{@item.Alias}-{item.ProductId}";
+                                        double? price = item.Price - (item.Price * item.Discount) / 100;
+                                        <div class="col-4">
+                                            <div class="product__discount__item">
+                                                <div class="product__discount__item__pic set-bg"
+                                                     data-setbg="/images/products/@item.Thumb">
+                                                    <div class="product__discount__percent">@item.Discount@phanTram</div>
+                                                    <ul class="product__item__pic__hover">
+                                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product__discount__item__text">
+                                                    <span>@item.Cat.CatName</span>
+                                                    <h5><a class="text-primary" href="@url">@item.ProductName</a></h5>
+                                                    <div class="product__item__price">@price@currency<span>@item.Price@currency</span></div>
+                                                    <span>@item.ShortDesc</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="filter__item">
+                    <div class="row">
+                        @* <div class="col-4 col-md-5">
+                            <div class="filter__sort">
+                                <span>Sắp xếp theo</span>
+                                <select>
+                                    <option value="0">Default</option>
+                                    <option value="0">Default</option>
+                                </select>
+                            </div>
+                        </div> *@
+                        <div class="col-12">
+                            <div class="filter__found">
+                                <h6>Tìm thấy <span>@Model.Count</span> sản phẩm</h6>
+                            </div>
+                        </div>
+                        @* <div class="col-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div> *@
+                    </div>
+                </div>
+                <div class="row">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            if (item.Discount == 0 || item.Discount == null)
+                            {
+                                string url = $"/San-pham/{item.Alias}-{item.ProductId}";
+                                <div class="col-4 col-md-6 col-sm-6">
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="/images/products/@item.Thumb">
+                                            <ul class="product__item__pic__hover">
+                                                <li><div class="add__to__favourite" data-productid="@item.ProductId"><i class="fa fa-heart"></i></div></li>
+                                                <li><a href="@url"><i class="fa fa-retweet"></i></a></li>
+                                                <li><div class="add__to__cart" data-productid="@item.ProductId"><i class="fa fa-shopping-cart"></i></div></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="@url">@item.ProductName</a></h6>
+                                            <h5>@item.Price.Value.ToString("N0")@currency</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <div class="col-12">
+                    <div class="product__pagination blog__pagination">
+                        <pager class="btn-link" options="@PagedListRenderOptions.Bootstrap4PageNumbersOnly" list="@Model" asp-area="" asp-controller="Product" asp-action="CatProductList" asp-route-catId="@cat.CatId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("input[type='checkbox'][name='cats']").on("change", function () {
+                var selectCategory = $("input[type='checkbox'][name='cats']:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                if (selectCategory.length > 0) {
+                    $.ajax({
+                        url: '/SearchProduct/FilterProduct',
+                        type: 'post',
+                        datatype: 'json',
+                        data: {
+                            catId: selectCategory,
+                        },
+                        async: true,
+                        success: function (result) {
+                            $("#filter__product__result").html('');
+                            $("#filter__product__result").html(result);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            alert("Lỗi");
+                        }
+                    });
+                }
+                else {
+                    location.reload();
+                }
+            });
+        });
+    </script>
+}

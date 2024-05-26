@@ -1,0 +1,94 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Slider>
+
+@{
+    ViewData["Title"] = "Danh sách Slide";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section-header">
+    <h1>Danh sách slider</h1>
+</div>
+<div class="section-body">
+    <div class="card card-info">
+        <div class="card-header">
+            <h4></h4>
+            <div class="card-header-action">
+                <a class="btn btn-outline-primary" asp-action="Create" asp-controller="AdminSliders"><i class="fa fa-plus-square mr-1"></i>Thêm mới</a>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-reponsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                Tên slide
+                            </th>
+                            <th>
+                                Hình ảnh
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+                            <th>
+                                Trang chủ
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.SliderName
+                                </td>
+                                @if (item.Active)
+                                {
+                                    <td>
+                                        <div class="badge badge-success">
+                                            Hoạt động
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div class="badge badge-danger">
+                                            Không hoạt động
+                                        </div>
+                                    </td>
+                                }
+                                @if (item.HomeFlag)
+                                {
+                                    <td>
+                                        <div class="badge badge-success">
+                                            Hiển thị
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <div class="badge badge-danger">
+                                            Không hiển thị
+                                        </div>
+                                    </td>
+                                }
+                                <td>
+                                    <img class="rounded-circle" width="35" height="35" data-toggle="tooltip" data-original-title="@item.SliderName" src="~/images/sliders/@item.Thumb">
+                                </td>
+                                <td>
+                                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.SliderId"><i class="fa fa-pencil space-icon"></i>Sửa</a>
+                                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.SliderId"><i class="fa fa-eye space-icon"></i>Chi tiết</a>
+                                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.SliderId"><i class="fa fa-trash space-icon"></i>Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

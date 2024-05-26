@@ -1,0 +1,39 @@
+﻿@model WebsiteKaichiTokyo.Models.Role
+
+@{
+    ViewData["Title"] = "Xóa quyền truy cập "+Model.RoleName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Bạn muốn xóa thông tin này?</h1>
+</div>
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td>ID:</td>
+                        <td>@Html.DisplayFor(model=>model.RoleId)</td>
+                    </tr>
+                    <tr>
+                        <td>Tên quyền truy cập:</td>
+                        <td>@Html.DisplayFor(model=>model.RoleName)</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td>@Html.DisplayFor(model=>model.Description)</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="RoleId" />
+                <button type="submit" class="btn btn-danger"><i class="fa fa-trash space-icon"></i>Xác nhận xóa</button>
+                <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@model Contact
+@{
+    ViewData["Title"] = "Thông tin liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbBlog.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb__text white__color__link">
+                    <h2>Liên hệ</h2>
+                    <div class="breadcrumb__option mt-2">
+                        <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                        <span>Liên hệ với chúng tôi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Contact Section Begin -->
+<section class="contact spad">
+    <div class="container">
+        <div class="row pt-3 white__bk">
+            <div class="col-lg-3 col-sm-6 text-center">
+                <div class="contact__widget">
+                    <span class="icon_phone"></span>
+                    <h4>Điện thoại</h4>
+                    <p>0374297413 | 0355055556</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 text-center">
+                <div class="contact__widget">
+                    <span class="icon_pin_alt"></span>
+                    <h4>Địa chỉ</h4>
+                    <p>Hà Nội</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 text-center">
+                <div class="contact__widget">
+                    <span class="icon_clock_alt"></span>
+                    <h4>Thời gian mở</h4>
+                    <p>10:00 - 23:00 hàng ngày</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 text-center">
+                <div class="contact__widget">
+                    <span class="icon_mail_alt"></span>
+                    <h4>Email</h4>
+                    <p>xlehieu@gmail.com | huycoi103@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Section End -->
+<!-- Map Begin -->
+<div class="map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d14891.240398531867!2d105.85231737740554!3d21.080245538861064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjHCsDA0JzU1LjUiTiAxMDXCsDUwJzQ3LjgiRQ!5e0!3m2!1svi!2s!4v1705560006695!5m2!1svi!2s"
+            height="500" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    <div class="map-inside">
+        <div class="inside-widget">
+            <h4>Hà Nội</h4>
+            <ul>
+                <li>Điện thoại: 0374297413 | 0355055556</li>
+                <li>Địa chỉ: Hà Nội</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Map End -->
+<!-- Contact Form Begin -->
+<div class="contact-form spad">
+    <div class="container">
+        <div class="row pt-3 white__bk">
+            <div class="col-12">
+                <div class="contact__form__title">
+                    <h2>Liên hệ</h2>
+                </div>
+            </div>
+        </div>
+        <form asp-controller="Home" asp-action="CreateContact" method="post">
+            <div class="row pb-3 white__bk">
+                <div class="col-4">
+                    <input type="text" asp-for="FullName" placeholder="Họ và tên">
+                    <span asp-validation-for="FullName"></span>
+                </div>
+                <div class="col-4">
+                    <input type="text" asp-for="PhoneNumber" placeholder="Nhập số điện thoại">
+                    <span asp-validation-for="PhoneNumber"></span>
+                </div>
+                <div class="col-4">
+                    <input type="email" asp-for="Email" placeholder="Nhập email">
+                    <span asp-validation-for="Email"></span>
+                </div>
+                <div class="col-12">
+                    <input type="text" asp-for="Title" placeholder="Nhập tiêu đề">
+                    <span asp-validation-for="Title"></span>
+                </div>
+                <div class="col-12 text-center">
+                    <textarea asp-for="Messages" placeholder="Lời nhắn"></textarea>
+                    <span asp-validation-for="Messages"></span>
+                    <button type="submit" class="site-btn">GỬI</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Contact Form End -->

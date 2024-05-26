@@ -1,0 +1,31 @@
+﻿@model WebsiteKaichiTokyo.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/css/style-register-login.css" rel="stylesheet" />
+}
+<section class="p-2" style="background-color: #eee;">
+    <div class="wrapper">
+        <form class="form-right" asp-action="Login">
+            <h2 class="text-uppercase">Đăng nhập</h2>
+            <div class="mb-3">
+                <label asp-for="UserName">Email</label>
+                <input type="text" asp-for="UserName" class="input-field">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Password">Mật khẩu</label>
+                <input type="password" asp-for="Password" class="input-field">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <a class="nav-link p-0 mb-2" href="/Dang-ky">Bạn chưa có tài khoản?</a>
+            <a class="nav-link p-0 mb-2" asp-controller="Accounts" asp-action="LoginGoogle"><i class="fa fa-google mr-2"></i>Đăng nhập bằng Google</a>
+            <div class="form-field">
+                <button type="submit" class="register">Đăng nhập</button>
+            </div>
+        </form>
+    </div>
+</section>

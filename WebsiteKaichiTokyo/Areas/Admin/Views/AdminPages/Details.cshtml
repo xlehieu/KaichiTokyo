@@ -1,0 +1,72 @@
+﻿@model WebsiteKaichiTokyo.Models.Page
+
+@{
+    ViewData["Title"] = "Chi tiết trang " + Model.PageName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Chi tiết trang @Model.PageName</h1>
+</div>
+<div class="section-body">
+    <div class="card card-warning">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered text-dark">
+                    <tr>
+                        <td>ID:</td>
+                        <td>@Html.DisplayFor(model=>model.PageId)</td>
+                    </tr>
+                    <tr>
+                        <td>Tên trang:</td>
+                        <td>@Html.DisplayFor(model=>model.PageName)</td>
+                    </tr>
+                    <tr>
+                        <td>Tiêu đề:</td>
+                        <td>@Html.DisplayFor(model=>model.Title)</td>
+                    </tr>
+                    <tr>
+                        <td>Nội dung trang:</td>
+                        <td>@Html.Raw(Model.Contents)</td>
+                    </tr>
+                    <tr>
+                        <td>Hình ảnh:</td>
+                        <td>@Html.DisplayFor(model=>model.Thumb)</td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái:</td>
+                        <td>
+                            @if (Model.Published)
+                            {
+                                <div class="badge badge-success">Hoạt động</div>
+                            }
+                            else
+                            {
+                                <div class="badge badge-danger">Không hoạt động</div>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Display(Model.MetaDesc)</td>
+                        <td>@Html.DisplayFor(model=>model.PageId)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Display(Model.MetaKey)</td>
+                        <td>@Html.DisplayFor(model=>model.PageId)</td>
+                    </tr>
+                    <tr>
+                        <td>Alias:</td>
+                        <td>@Html.DisplayFor(model=>model.Alias)</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày tạo:</td>
+                        <td>@Html.DisplayFor(model=>model.CreateDate)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model?.PageId"><i class="fa fa-pencil space-icon"></i>Chỉnh sửa</a>
+            <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model WebsiteKaichiTokyo.Models.Role
+@{
+    ViewData["Title"] = "Chi tiết quyền truy cập " + Model.RoleName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Chi tiết thông tin quyền truy cập @Model.RoleName</h1>
+</div>
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td>ID:</td>
+                        <td>@Html.DisplayFor(model=>model.RoleId)</td>
+                    </tr>
+                    <tr>
+                        <td>Tên quyền truy cập:</td>
+                        <td>@Html.DisplayFor(model=>model.RoleName)</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td>@Html.DisplayFor(model=>model.Description)</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model?.RoleId"><i class="fa fa-pencil space-icon"></i>Chỉnh sửa</a>
+            <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+        </div>
+    </div>
+</div>

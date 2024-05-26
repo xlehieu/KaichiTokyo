@@ -1,0 +1,70 @@
+﻿<!-- partial Side bar-->
+<div class="main-sidebar sidebar-style-2">
+    <aside id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index"><img class="header__logo" src="~/img/logo.png"/></a>
+        </div>
+        <div class="sidebar-brand sidebar-brand-sm">
+            <a asp-area ="Admin" asp-controller="Home" asp-action="Index">KT</a>
+        </div>
+        <ul class="sidebar-menu" id="ul__active">
+            <li class="menu-header">Dashboard</li>
+            <li><a class="nav-link" href="/Admin/Home"><i class="fa fa-tachometer"></i><span>Dashboard</span></a></li>
+            <li class="menu-header">Quản lý hệ thống</li>
+            <li><a asp-controller="AdminAccounts" asp-action="Index" class="nav-link"><i class="fas fa-users"></i> <span>Thông tin tài khoản</span></a></li>
+            <li><a asp-controller="AdminRoles" asp-action="Index" class="nav-link"><i class="fa fa-user"></i> <span>Thông tin quyền truy cập</span></a></li>
+            <li class="menu-header">Quản lý sản phẩm</li>
+            @* SẢN PHẨM *@
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-basket"></i><span>Thông tin sản phẩm</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link beep beep-sidebar" asp-controller="AdminProducts" asp-action="Index">Danh sách sản phẩm</a></li>
+                    <li><a class="nav-link" asp-controller="AdminProducts" asp-action="Create">Thêm sản phẩm</a></li>
+                </ul>
+            </li>
+            @* DANH MỤC *@
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="fa fa-list-alt"></i><span>Danh mục sản phẩm</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link beep beep-sidebar" asp-controller="AdminCategories" asp-action="Index">Danh sách danh mục</a></li>
+                    <li><a class="nav-link" asp-controller="AdminCategories" asp-action="Create">Thêm danh mục</a></li>
+                </ul>
+            </li>
+            @* QUẢN LÝ ĐƠN HÀNG*@
+            <li class="menu-header">Quản lý đơn hàng</li>
+            <li><a class="nav-link" asp-area="Admin" asp-controller="AdminOrders" asp-action="Index"><i class="fa fa-th-list"></i> <span>Thông tin đơn hàng</span></a></li>
+            <li class="menu-header">Khác</li>
+            @* QUẢN LÝ TRANG *@
+            <li><a class="nav-link" asp-area="Admin" asp-controller="AdminPages" asp-action="Index"><i class="fa fa-file-text"></i> <span>Quản lý trang</span></a></li>
+            @* QUẢN LÝ TIN TỨC *@
+            <li><a class="nav-link" asp-area="Admin" asp-controller="AdminNews" asp-action="Index"><i class="fa fa-newspaper"></i> <span>Quản lý tin tức</span></a></li>
+            <li><a class="nav-link" asp-area="Admin" asp-controller="AdminContacts" asp-action="Index"><i class="fa fa-phone"></i> <span>Thông tin liên hệ</span></a></li>
+            @* QUẢN LÝ SLIDER *@
+            <li><a class="nav-link" asp-area="Admin" asp-controller="AdminSliders" asp-action="Index"><i class="fa fa-window-maximize"></i> <span>Slider</span></a></li>
+        </ul>
+        <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg btn-block btn-icon-split">
+                <i class="fas fa-rocket"></i>Về trang chủ
+            </a>
+        </div>
+    </aside>
+</div>
+@section Scripts{
+    <script>
+        // Lắng nghe sự kiện click trên các thẻ li trong sidebar
+        document.addEventListener("DOMContentLoaded", function () {
+            var sidebarItems = document.querySelectorAll("#ul__active li");
+            sidebarItems.forEach(function (item) {
+                item.addEventListener("click", function () {
+                    // Xóa class "active" khỏi tất cả các thẻ li trong sidebar
+                    sidebarItems.forEach(function (item) {
+                        item.classList.remove("active");
+                    });
+                    // Thêm class "active" vào thẻ li được click
+                    this.classList.add("active");
+                });
+            });
+        });
+
+    </script>
+}

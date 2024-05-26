@@ -1,0 +1,32 @@
+﻿@model List<Product>
+@if (Model != null)
+{
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem=>item.ProductId)</td>
+            <td>@Html.DisplayFor(modelItem => item.Cat.CatName)</td>
+            <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td><img class="rounded-circle" width="35" height="35" data-toggle="tooltip" title="" data-original-title="@item.ProductName" src="~/images/products/@item.Thumb" /></td>
+            @if (item.Active)
+            {
+                <td>
+                    <div class="badge badge-success">Hoạt động</div>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <div class="badge badge-danger">Không hoạt động</div>
+                </td>
+            }
+            <td>@Html.DisplayFor(modelItem=>item.UnitInstock)</td>
+            <td>
+                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.ProductId"><i class="fa fa-pencil space-icon"></i>Sửa</a>
+                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.ProductId"><i class="fa fa-eye space-icon"></i>Chi tiết</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ProductId"><i class="fa fa-trash space-icon"></i>Xóa</a>
+            </td>
+        </tr>
+    }
+}

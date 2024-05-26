@@ -1,0 +1,95 @@
+﻿@model List<WebsiteKaichiTokyo.ViewModels.CartItem>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currency = "₫";
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumbProduct.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text white__color__link">
+                    <h2>Giỏ hàng</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-action="Index" asp-controller="Home">Trang chủ</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Sản phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <img src="~/images/products/@item.Product.Thumb" alt="@item.Product.Title">
+                                            <h5>@item.Product.ProductName</h5>
+                                        </td>
+                                        <td class="shoping__cart__price">
+                                            @item.Product.Price.Value.ToString("#,##0")@currency
+                                        </td>
+                                        <td class="shoping__cart__quantity">
+                                            <div class="quantity">
+                                                <div class="pro-qty">
+                                                    <input type="text" value="@item.Amount">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            @item.TotalMoney.ToString("#,##0")@currency
+                                        </td>
+                                        <td class="shoping__cart__item__close">
+                                            <a class="icon_close"></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="shoping__checkout">
+                        <ul>
+                            <li style="font-size:19px">Tổng tiền:  <span style="font-size:29px">@Model.Sum(x=>x.TotalMoney).ToString("#,##0")@currency</span></li>
+                        </ul>
+                        <a href="/Thanh-toan-gio-hang" class="primary-btn">Thanh toán</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+               <div class="col-12">
+                   <h2 class="text-center">Bạn chưa có sản phẩm nào trong giỏ hàng!</h2>
+                    <a href="/San-pham">Đi mua hàng <i class="fa fa-shopping-basket"></i></a>
+               </div>
+            </div>
+        }
+    </div>
+</section>
+<!-- Shoping Cart Section End -->

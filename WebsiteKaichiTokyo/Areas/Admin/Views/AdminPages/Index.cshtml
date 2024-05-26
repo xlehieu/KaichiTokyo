@@ -1,0 +1,73 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Page>
+@{
+    int pageNumber = ViewBag.CurrentPage;
+    ViewData["Title"] = "Danh sách trang";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section-header">
+    <h1>Danh sách trang</h1>
+</div>
+<div class="section-body">
+    <div class="card card-info">
+        <div class="card-header">
+            <h4>Danh sách trang : @pageNumber</h4>
+            <a class="card-header-action btn btn-outline-primary" asp-controller="AdminPages" asp-action="Create"><i class="fa fa-plus-square space-icon"></i>Thêm trang mới</a>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Tên trang
+                            </th>
+                            <th>
+                                Trạng thái
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PageId)
+                                </td>
+                                <td>
+                                    <a target="_blank" href="/Pages/@item.Alias">@Html.DisplayFor(modelItem => item.PageName)</a>
+                                </td>
+                                <td>
+                                    @if (item.Published)
+                                    {
+                                        <div class="badge badge-success">Hoạt động</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="badge badge-danger">Không hoạt động</div>
+                                    }
+                                <td>
+                                    <a asp-action="Edit" class="btn btn-success" asp-route-id="@item.PageId"><i class="fa fa-pencil space-icon"></i>Sửa</a>
+                                    <a asp-action="Details" class="btn btn-warning" asp-route-id="@item.PageId"><i class="fa fa-eye space-icon"></i>Chi tiết</a>
+                                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.PageId"><i class="fa fa-trash space-icon"></i>Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div aria-label="Page navigation example" class="card-footer text-right">
+            <nav class="d-inline-block">
+                <ul class="pagination mb-0">
+                    <pager list="@Model" asp-area="Admin" asp-controller="AdminPages" asp-action="Index"></pager>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

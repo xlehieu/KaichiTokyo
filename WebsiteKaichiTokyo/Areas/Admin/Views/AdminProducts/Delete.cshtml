@@ -1,0 +1,136 @@
+﻿@model WebsiteKaichiTokyo.Models.Product
+
+@{
+    ViewData["Title"] = "Xóa sản phẩm " + Model.ProductName;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1>Bạn có muốn xóa sản phẩm @Model.ProductName?</h1>
+</div>
+<div class="section-body">
+    <div class="card card-danger">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered text-dark">
+                    <tr>
+                        <td>ID:</td>
+                        <td class="text-dark">@Model.ProductId</td>
+                    </tr>
+                    <tr>
+                        <td>Tên sản phẩm:</td>
+                        <td>@Model.ProductName</td>
+                    </tr>
+                    <tr>
+                        <td>Danh mục sản phẩm:</td>
+                        <td>@Model.Cat.CatName</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả ngắn:</td>
+                        <td>@Model.ShortDesc</td>
+                    </tr>
+                    <tr>
+                        <td>Giá nhập:</td>
+                        <td>@Model.GiaNhap</td>
+                    </tr>
+                    <tr>
+                        <td>Giá bán:</td>
+                        <td>@Model.Price</td>
+                    </tr>
+                    <tr>
+                        <td>Giảm giá:</td>
+                        <td>@Model.Discount</td>
+                    </tr>
+                    <tr>
+                        <td>Tiêu đề:</td>
+                        <td>@Model.Title</td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td>@Model.Description</td>
+                    </tr>
+                    <tr>
+                        <td>Hình ảnh:</td>
+                        <td>
+                            <img width="200" height="200" src="~/images/products/@Model.Thumb" alt="@Model.Title" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sản phẩm bán chạy:</td>
+                        <td>
+                            @if (Model.BestSeller)
+                            {
+                                <input type="checkbox" checked="" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hiển thị trang chủ:</td>
+                        <td>
+                            @if (Model.HomeFlag)
+                            {
+
+                                <input type="checkbox" checked="" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Trạng thái:</td>
+                        <td>
+                            @if (Model.Active)
+                            {
+                                <input type="checkbox" checked="" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ngày tạo:</td>
+                        <td>@Model.CreateDate</td>
+                    </tr>
+                    <tr>
+                        <td>Ngày chỉnh sửa:</td>
+                        <td>@Model.ModifiedDate</td>
+                    </tr>
+                    <tr>
+                        <td>Tags:</td>
+                        <td>@Model.Tags</td>
+                    </tr>
+                    <tr>
+                        <td>Meta desc:</td>
+                        <td>@Model.MetaDesc</td>
+                    </tr>
+                    <tr>
+                        <td>Meta key:</td>
+                        <td>@Model.MetaKey</td>
+                    </tr>
+                    <tr>
+                        <td>Alias:</td>
+                        <td>@Model.Alias</td>
+                    </tr>
+                    <tr>
+                        <td>Số lượng tồn kho:</td>
+                        <td>@Model.UnitInstock</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete">
+                <input asp-for="ProductId" type="hidden"/>
+                <button class="btn btn-danger"><i class="fa fa-trash space-icon"></i>Xóa</button>
+                <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>

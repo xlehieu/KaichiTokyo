@@ -1,0 +1,65 @@
+﻿@using PagedList.Core.Mvc
+@model PagedList.Core.PagedList<Contact>
+
+@{
+    ViewData["Title"] = "Danh sách thông tin liên hệ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var currentPage = ViewBag.CurrentPage;
+}
+
+<div class="section-header">
+    <h1>Danh sách danh mục</h1>
+</div>
+<div class="section-body">
+    <div class="card card-info">
+        <div class="card-header">
+            <h4>Danh sách danh mục: trang @currentPage</h4>
+            <div class="card-header-action">
+                <a class="btn btn-outline-primary" asp-controller="AdminCategories" asp-action="Create"><i class="fa fa-plus-square space-icon"></i>Thêm danh mục</a>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-md">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Họ và tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Email</th>
+                            <th>Tiêu đề</th>
+                            <th>Ngày gửi</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.ContactId</td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.PhoneNumber</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.CreateDate</td>
+                                    <td>
+                                        <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.ContactId"><i class="fa fa-eye mr-1"></i>Xem chi tiết</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation example" class="card-footer text-right">
+                <nav class="d-inline-block">
+                    <ul class="pagination mb-0">
+                        <pager list="@Model" asp-area="Admin" asp-controller="AdminContacs" asp-action="Index" />
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

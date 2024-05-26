@@ -1,0 +1,80 @@
+﻿@model List<Order>
+@if (Model.Count > 0 && Model != null)
+{
+    <div class="row">
+        <div class="col-12">
+            <div class="table-reponsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày mua</th>
+                            <th>Phương thức thanh toán</th>
+                            <th>Tình trạng</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                            <th><i class="fa fa-th"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            string urlDetail = $"/Chi-tiet-don-hang/INV-{item.OrderId}";
+                            <tr class="text-center">
+                                <td>INV-@item.OrderId</td>
+                                <td>@item.OrderDate</td>
+                                @if (item.Payment != null)
+                                {
+                                    <td>@item.Payment.PaymentName</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (item.Paid != null && item.Paid.Value)
+                                {
+                                    <td class="badge badge-success">Đã thanh toán</td>
+                                }
+                                else
+                                {
+                                    <td class="badge badge-danger">Chưa thanh toán</td>
+                                }
+                                @if (item.TransactStatusId.HasValue)
+                                {
+                                    if (item.TransactStatusId == 1 || item.TransactStatusId == 2 || item.TransactStatusId == 3)
+                                    {
+                                        <td class="text-warning">@item.TransactStatus.Status</td>
+                                    }
+                                    else if (item.TransactStatusId == 4 || item.TransactStatusId == 5)
+                                    {
+                                        <td class="text-danger">@item.TransactStatus.Status</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-secondary">@item.TransactStatus.Status</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                <td>@item.Total.Value.ToString("N0")đ</td>
+                                <td>
+                                    <a href="@urlDetail" class="btn site-btn">Xem đơn hàng</a>
+                                </td>
+                                @if (item.Paid.HasValue && item.Paid.Value == false && item.PaymentId != 1)
+                                {
+                                    <td><a href="/Thanh-toan-gio-hang?orderid=@item.OrderId" class="primary-btn">Thanh toán</a></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h6>Bạn chưa có đơn hàng nào</h6>
+}

@@ -1,0 +1,70 @@
+﻿@model TinTuc
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string url = $"/News/{Model.Alias}-{Model.PostId}";
+    var postMayYouLike = ViewData["PostMayYouLike"] as List<TinTuc>;
+}
+<!-- Blog Details Section Begin -->
+<section class="blog-details mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>@Model.Title</h2>
+                    <p class="text-right mt-2">@Model.CreateDate.Value.ToLongDateString()</p>
+                    <div class="breadcrumb__option text-left">
+                        <a asp-controller="Blog" asp-action="Index">Blog</a>
+                        <span>@Model.Title</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 pt-3 white__bk">
+            <div class="col-12 order-md-1 order-1">
+                <div class="blog__details__text text-dark">
+                    <h2 class="content-detail-sapo fck_detail ">@Model.Scontents</h2>
+                    @Html.Raw(Model.Contents)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Details Section End -->
+<!-- Related Blog Section Begin -->
+@if (Model != null)
+{
+    <section class="related-blog spad">
+        <div class="container">
+            <div class="row pt-3 white__bk">
+                <div class="col-12">
+                    <div class="section-title related-blog-title">
+                        <h3>TIN TỨC BẠN CÓ THỂ THÍCH</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in postMayYouLike)
+                {
+                    string urlPostYouMayLike = $"/tin-tuc/{@item.Alias}-{@item.PostId}.html";
+                    <div class="col-4 col-md-4 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic">
+                                <img src="~/images/news/@item.Thumb" alt="@item.Title">
+                            </div>
+                            <div class="blog__item__text">
+                                <ul>
+                                    <li><i class="fa fa-calendar-o"></i>@item.CreateDate.Value.ToShortDateString()</li>
+                                    <li><i class="fa fa-comment-o"></i></li>
+                                </ul>
+                                <h5><a href="@urlPostYouMayLike">@item.Title</a></h5>
+                                <p>@item.Scontents</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+<!-- Related Blog Section End -->

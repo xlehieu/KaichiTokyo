@@ -1,0 +1,31 @@
+﻿@model WebsiteKaichiTokyo.Models.Role
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin quyền truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="section-header">
+    <h1 class="card-title">Chỉnh sửa quyền truy cập</h1>
+</div>
+<div class="section-body">
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Edit" class="forms-sample">
+                <div asp-validation-summary="ModelOnly" class="text-danger">ID</div>
+                <input type="hidden" asp-for="RoleId" />
+                <div class="form-group">
+                    <label asp-for="RoleName" class="control-label">Tên quyền truy cập</label>
+                    <input asp-for="RoleName" class="form-control" placeholder="Tên quyền truy cập" />
+                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label">Mô tả</label>
+                    <input asp-for="Description" class="form-control" placeholder="Mô tả quyền truy cập" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save space-icon"></i>Lưu</button>
+                <a class="btn btn-dark" asp-action="Index"><i class="fa fa-reply space-icon"></i>Quay lại</a>
+            </form>
+        </div>
+    </div>
+</div>
